@@ -6,10 +6,10 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
