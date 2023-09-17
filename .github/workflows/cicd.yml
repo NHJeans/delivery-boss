@@ -1,0 +1,35 @@
+name: delivery-boss-cicd
+
+on:
+  push:
+    branches: [ "main" ]
+      
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # git actions를 트리거한 commit에 checkout
+      - name: checkout commit
+        uses: actions/checkout@v3
+      
+      # node 환경 세팅
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      # 환경 변수 세팅
+      - name: setup environment variables
+        run: |
+          touch .env
+          echo "DATABASE_URL = ${{ secrets.DATABASE_URL }}" >> .env
+          echo "PORT = ${{ secrets.PORT }}" >> .env
+
+      # 패키지 설치
+      - name: setup packages
+        run: npm install
+
+      # 테스트 진행
+      - name: start test
+        run: npm test
