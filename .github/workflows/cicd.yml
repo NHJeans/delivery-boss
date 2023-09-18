@@ -67,3 +67,11 @@ jobs:
       # S3로 압축 파일 업로드
       - name: upload .zip file to S3
         run: aws s3 cp ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+
+      # codedeploy에게 배포 요청
+      - name: request deploy to codedeploy
+        run: aws deploy create-deployment 
+                --application-name $CODE_DEPLOY_APP_NAME 
+                --deployment-config-name CodeDeployDefault.AllAtOnce
+                --deployment-group-name $DEPLOYMENT_GROUP_NAME
+                --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
