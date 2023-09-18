@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "CD 기능 테스트 4"', () => {
-      expect(appController.getHello()).toBe('CD 기능 테스트 4');
+    it('should return "CD 기능 테스트 5"', () => {
+      expect(appController.getHello()).toBe('CD 기능 테스트 5');
     });
   });
 });
