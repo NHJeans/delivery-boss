@@ -40,6 +40,7 @@ export class MenuService {
         })
     }
 
+    
     deleteMenu(store_id: number, menu_id: number): Promise<Menu> {
         return this.prisma.menu.delete({
             where: {
