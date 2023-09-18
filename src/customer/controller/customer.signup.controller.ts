@@ -1,6 +1,6 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
-import { CustomerSignupService } from '../service/customer.signup.service';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CustomerSignUpDto } from '../dto/customer.signup.dto';
+import { CustomerSignupService } from '../service/customer.signup.service';
 
 @Controller('customer/signup')
 export class CustomerSignupController {
