@@ -2,7 +2,7 @@
 REPOSITORY=/home/ubuntu/delivery-boss
 
 # 프로젝트 위치로 이동
-cd #REPOSITORY
+cd $REPOSITORY
 
 # 서버 PC 환경에서 package 설치
 echo "> setup packages"
