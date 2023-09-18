@@ -43,6 +43,9 @@ jobs:
 
   # CD
   delivery:
+    # test가 성공해야 실행
+    needs: test
+    
     runs-on: ubuntu-latest
     steps:
       # git actions를 트리거한 commit에 checkout
