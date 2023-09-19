@@ -18,6 +18,10 @@ export class CustomerLoginService {
     const user = await this.prisma.customer.findUnique({
       where: { email },
     });
+    //* 이메일 일치 여부 확인
+    if (!user) {
+      throw new HttpException('이메일이 없습니다.', HttpStatus.UNAUTHORIZED);
+    }
     //* 사용자 정보가 조회되면 bcrypt를 사용하여 제공된 비밀번호와 데이터베이스에 저장된 비밀번호를 비교
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new HttpException('로그인 정보가 올바르지 않습니다.', HttpStatus.UNAUTHORIZED);
