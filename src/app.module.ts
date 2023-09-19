@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CustomerModule } from './customer/customer.module';
+import { LoggerMiddleware } from './logger/logger.middleware';
 import { OwnerModule } from './owner/owner.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { LoggerMiddleware } from './logger/logger.middleware';
 
 @Module({
   imports: [
