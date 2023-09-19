@@ -7,6 +7,7 @@ import { CustomerModule } from './customer/customer.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { OwnerModule } from './owner/owner.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { StoreModule } from './store/store.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PrismaModule } from './prisma/prisma.module';
     CommentModule,
     CustomerModule,
     OwnerModule,
+    StoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],

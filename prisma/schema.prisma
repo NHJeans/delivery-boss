@@ -72,7 +72,7 @@ Menu        Menu   @relation(fields: [MenuId], references: [id], onUpdate: Casca
 
 model Comment {
 id          Int      @id @default(autoincrement())
-CustomerId  Int
+CustomerId  Int      
 OrderId     Int      @unique
 StoreId     Int
 review      String
