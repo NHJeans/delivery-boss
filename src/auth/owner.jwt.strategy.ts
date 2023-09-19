@@ -2,17 +2,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { jwtSecret } from './auth.module';
 import { OwnerLoginService } from '../owner/service/owner.login.service';
+import { ConfigService } from '@nestjs/config';
 
 //* JWT 토큰을 이용한 전략 구현
 @Injectable()
 export class OwnerJwtStrategy extends PassportStrategy(Strategy, 'customer-jwt') {
-  constructor(private readonly ownerLoginService: OwnerLoginService) {
+  constructor(
+    private readonly ownerLoginService: OwnerLoginService,
+    private readonly configService: ConfigService
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtSecret,
+      secretOrKey: configService.get<string>('JWT_SECRET'),
     });
   }
 

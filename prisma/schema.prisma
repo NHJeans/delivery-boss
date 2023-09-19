@@ -15,6 +15,7 @@ id        Int      @id @default(autoincrement())
 email     String   @unique
 password  String
 point     Int
+refreshToken  String?
 Stores    Store[]
 }
 
@@ -23,6 +24,7 @@ id        Int      @id @default(autoincrement())
 email     String   @unique
 password  String
 point     Int      @default(1000000)
+refreshToken  String?
 Orders    Order[]
 Comments  Comment[]
 }

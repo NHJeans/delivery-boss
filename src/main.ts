@@ -14,7 +14,7 @@ async function bootstrap() {
     })
   );
 
-  const config = new DocumentBuilder().setTitle('Median').setDescription('The Median API description').setVersion('0.1').build();
+  const config = new DocumentBuilder().setTitle('Delivery Boss').setDescription('The Median API description').setVersion('0.1').addBearerAuth().build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
