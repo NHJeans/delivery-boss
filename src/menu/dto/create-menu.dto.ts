@@ -1,4 +1,5 @@
 import { ApiProperty, PickType } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import { IsNumber, IsString } from "class-validator";
 
 export class menuDto { //* 스웨거 작성
@@ -14,6 +15,7 @@ export class menuDto { //* 스웨거 작성
     })
     readonly name: string;
 
+    @Type(()=>Number)
     @IsNumber()
     readonly price: number;
 

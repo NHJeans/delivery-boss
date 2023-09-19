@@ -7,18 +7,18 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 export class MenuService {
     constructor(private prisma: PrismaService) {}
 
-    async createMenu(createMenuDto: CreateMenuDto): Promise<Menu> {
+    async createMenu(createMenuDto: CreateMenuDto, path: string): Promise<Menu> {
         return this.prisma.menu.create({
             data: {
                 StoreId: createMenuDto.storeId,
                 name : createMenuDto.name,
                 price : createMenuDto.price,
-                image : createMenuDto.image
+                image : path
             }
         })
     }
 
-    getMenus(id: number): Promise<Menu[]>{
+    async getMenus(id: number): Promise<Menu[]>{
         return this.prisma.menu.findMany({
             where: {
                 StoreId: id
@@ -26,7 +26,7 @@ export class MenuService {
         })
     }
 
-    updateMenu(store_id: number, menu_id: number, name: string, price: number, image: string): Promise<Menu> {
+    async updateMenu(store_id: number, menu_id: number, name: string, price: number, image: string): Promise<Menu> {
         return this.prisma.menu.update({
             where: {
                 StoreId: store_id,
@@ -41,7 +41,7 @@ export class MenuService {
     }
 
     
-    deleteMenu(store_id: number, menu_id: number): Promise<Menu> {
+    async deleteMenu(store_id: number, menu_id: number): Promise<Menu> {
         return this.prisma.menu.delete({
             where: {
                 StoreId: store_id,
