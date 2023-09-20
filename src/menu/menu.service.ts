@@ -1,52 +1,53 @@
 import { Injectable } from '@nestjs/common';
-import { Menu } from '@prisma/client';
+import { Menu, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
+import { UpdateMenuDto } from './dto/update-menu.dto';
 
 @Injectable()
 export class MenuService {
-    constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
-    async createMenu(createMenuDto: CreateMenuDto, path: string): Promise<Menu> {
-        return this.prisma.menu.create({
-            data: {
-                StoreId: createMenuDto.storeId,
-                name : createMenuDto.name,
-                price : createMenuDto.price,
-                image : path
-            }
-        })
-    }
+  async createMenu(createMenuDto: CreateMenuDto): Promise<Menu> {
+    return this.prisma.menu.create({
+      data: {
+        StoreId: createMenuDto.StoreId,
+        name: createMenuDto.name,
+        price: createMenuDto.price,
+        image: createMenuDto.image,
+      },
+    });
+  }
 
-    async getMenus(id: number): Promise<Menu[]>{
-        return this.prisma.menu.findMany({
-            where: {
-                StoreId: id
-            }
-        })
-    }
+  async getMenus(menuWhereInput: Prisma.MenuWhereInput): Promise<Menu[]> {
+    return this.prisma.menu.findMany({
+      where: menuWhereInput
+    });
+  }
 
-    async updateMenu(store_id: number, menu_id: number, name: string, price: number, image: string): Promise<Menu> {
-        return this.prisma.menu.update({
-            where: {
-                StoreId: store_id,
-                id: menu_id
-            },
-            data: {
-                name,
-                price,
-                image
-            }
-        })
-    }
+  async getMenu(menuWhereUniqueInput: Prisma.MenuWhereUniqueInput): Promise<Menu> {
+    return this.prisma.menu.findUniqueOrThrow({
+      where: menuWhereUniqueInput
+    })
+  }
 
-    
-    async deleteMenu(store_id: number, menu_id: number): Promise<Menu> {
-        return this.prisma.menu.delete({
-            where: {
-                StoreId: store_id,
-                id: menu_id,
-            }
-        })
-    }
+  async updateMenu(updateMenuDto: UpdateMenuDto): Promise<Menu> {
+    return this.prisma.menu.update({
+      where: {
+        StoreId: updateMenuDto.StoreId,
+        id: updateMenuDto.menuId,
+      },
+      data: {
+        name: updateMenuDto.name,
+        price: updateMenuDto.price,
+        image: updateMenuDto.image
+      },
+    });
+  }
+
+  async deleteMenu(where: Prisma.MenuWhereUniqueInput): Promise<Menu> {
+    return this.prisma.menu.delete({
+      where
+    });
+  }
 }

@@ -1,37 +1,35 @@
 import { ApiProperty, PickType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsNumber, IsString } from "class-validator";
+import { IsEmpty, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class menuDto { //* 스웨거 작성
-    storeId: number;
+    StoreId: number;
     
     menuId: number;
 
     @IsString()
+    @IsNotEmpty()
     @ApiProperty({
         name: 'name',
         type: String,
-
     })
-    readonly name: string;
+    name: string;
 
     @Type(()=>Number)
     @IsNumber()
-    readonly price: number;
+    @IsNotEmpty()
+    @ApiProperty({
+        name: 'pirce',
+        type: String,
+    })
+    price: number;
 
-    @IsString()
-    readonly image: string;
-    
-    readonly menuQuantity: number;
-    
-    readonly category: string;
-    
-    readonly description: string;
+    image: string;
 }
 
 
 export class CreateMenuDto extends PickType(menuDto,[
-    "storeId",
+    "StoreId",
     "name",
     "price",
     "image"
