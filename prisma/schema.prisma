@@ -54,11 +54,11 @@ id          Int          @id @default(autoincrement())
 CustomerId  Int
 StoreId     Int
 price       Int
-status      Int
+status      String @default("ordered")
 Carts       Cart[]
 Customer    Customer   @relation(fields: [CustomerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 Store       Store      @relation(fields: [StoreId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-Comment     Comment?   
+Comment     Comment?  
 }
 
 model Cart {
@@ -68,7 +68,7 @@ MenuId      Int
 CustomerId  Int
 count       Int
 price       Int
-status      String @default("ordered")
+status      String @default("added")
 Order       Order?  @relation(fields: [OrderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 Menu        Menu  @relation(fields: [MenuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 Customer    Customer @relation(fields: [CustomerId], references: [id], onUpdate: Cascade, onDelete: Cascade)

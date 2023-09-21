@@ -15,7 +15,7 @@ export class CartsController {
   @Post('/:menuId')
   async createCart(@Param('menuId') menuId: number, @Body() body: CartCreateDto) {
     // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
-    const customerId: number = 2;
+    const customerId: number = 1;
     
     return this.cartsService.createCart(customerId, menuId, body);
   }
