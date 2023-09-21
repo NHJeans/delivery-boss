@@ -3,6 +3,8 @@ import { CartsService } from './carts.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { CartCreateDto } from './dto/cart.create.dto';
 
+// Todo: 로그인 정보 관련 코드 수정, 이미지 전달 관련 코드 수정
+
 @Controller('carts')
 export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
@@ -12,7 +14,7 @@ export class CartsController {
   @Post('/:menuId')
   async createCart(@Param('menuId') menuId: number, @Body() body: CartCreateDto) {
     // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
-    const customerId: number = 1;
+    const customerId: number = 2;
     
     return this.cartsService.createCart(customerId, menuId, body);
   }
@@ -21,7 +23,10 @@ export class CartsController {
   @ApiOperation({ summary: '장바구니 전체 조회' })
   @Get()
   async getAllCarts() {
-    return this.cartsService.getAllCarts();
+    // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
+    const customerId: number = 1;
+
+    return this.cartsService.getAllCarts(customerId);
   }
   
   // * 장바구니 메뉴 수정
