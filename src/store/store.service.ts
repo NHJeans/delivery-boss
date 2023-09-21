@@ -59,6 +59,6 @@ export class StoreService {
 
     await this.prisma.store.delete({ where: { id } });
 
-    return { message: '업장 정보 삭제가 완료되었니다.' };
+    return { message: '업장 정보 삭제가 완료되었습니다.' };
   }
 }
