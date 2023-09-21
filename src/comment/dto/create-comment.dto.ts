@@ -52,7 +52,6 @@ export class CreateCommentDto {
   // @ApiProperty()
   // readonly StoreId: number;
 
-  // * 사실 review_content는 없어도 되긴 함
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
@@ -65,18 +64,18 @@ export class CreateCommentDto {
   @ApiProperty()
   readonly star: number;
 
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty()
-  readonly CustomerId: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // @ApiProperty()
+  // readonly CustomerId: number;
 
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty()
-  readonly OrderId: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // @ApiProperty()
+  // readonly OrderId: number;
 
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty()
-  readonly StoreId: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // @ApiProperty()
+  // readonly StoreId: number;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Validator, validate } from 'class-validator';
 import { info } from 'console';
 
 export class CreateStoreDto {
@@ -16,10 +16,11 @@ export class CreateStoreDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  readonly OwnerId: number
+  readonly OwnerId: number;
 
-// * 가게 이미지 필요하면 넣기, 근데 추가할려면 schema에도 추가해야함!
-//   @IsString()
-//   @ApiProperty()
-//   readonly info: image;
+  // * 가게 이미지 필요하면 넣기, 근데 추가할려면 schema에도 추가해야함!
+  // * 이미지 
+  //   @IsString()
+  //   @ApiProperty()
+  //   readonly info: image;
 }
