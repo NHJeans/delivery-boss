@@ -1,6 +1,7 @@
 import { PrismaService } from './../prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CartCreateDto } from './dto/cart.create.dto';
+import { CartUpdateDto } from './dto/cart.update.dto';
 
 @Injectable()
 export class CartsService {
@@ -41,8 +42,21 @@ export class CartsService {
   }
   
   // * 장바구니 메뉴 수정
-  updateCart() {
-    return '';
+  async updateCart(customerId: number, cartId: number, body: CartUpdateDto) {
+    const cart = await this.prisma.cart.findUnique({ where: { id: cartId } });
+    // ! 해당하는 카트가 없는 경우
+    if (!cart) {
+      throw new HttpException('카트를 다시 확인해주세요.', HttpStatus.NOT_FOUND);
+    }
+
+    // ! 카트 수정 권한이 없는 경우
+    if (cart.CustomerId !== customerId) {
+      throw new HttpException('수정 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    }
+
+    await this.prisma.cart.update({ where: { id: cart.id }, data: { count: body.count } });
+
+    return { message: '장바구니 수정이 완료되었습니다.' };
   }
   
   // * 장바구니 메뉴 삭제

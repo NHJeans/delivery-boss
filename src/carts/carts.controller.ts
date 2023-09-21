@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CartsService } from './carts.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { CartCreateDto } from './dto/cart.create.dto';
+import { CartUpdateDto } from './dto/cart.update.dto';
 
-// Todo: 로그인 정보 관련 코드 수정, 이미지 전달 관련 코드 수정
+// Todo: 전체적으로 - 로그인 정보 관련 코드 수정, 이미지 전달 관련 코드 수정
 
 @Controller('carts')
 export class CartsController {
@@ -31,9 +32,12 @@ export class CartsController {
   
   // * 장바구니 메뉴 수정
   @ApiOperation({ summary: '장바구니 메뉴 수정' })
-  @Patch('cartId')
-  async updateCart(@Param('cartId') cartId: number) {
-    return this.cartsService.updateCart();
+  @Patch('/:cartId')
+  async updateCart(@Param('cartId') cartId: number, @Body() body: CartUpdateDto) {
+    // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
+    const customerId: number = 1;
+
+    return this.cartsService.updateCart(customerId, cartId, body);
   }
 
   // * 장바구니 메뉴 삭제
