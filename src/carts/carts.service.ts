@@ -41,7 +41,7 @@ export class CartsService {
     });
   }
   
-  // * 장바구니 메뉴 수정
+  // * 장바구니 수정
   async updateCart(customerId: number, cartId: number, body: CartUpdateDto) {
     const cart = await this.prisma.cart.findUnique({ where: { id: cartId } });
     // ! 해당하는 카트가 없는 경우
@@ -59,8 +59,21 @@ export class CartsService {
     return { message: '장바구니 수정이 완료되었습니다.' };
   }
   
-  // * 장바구니 메뉴 삭제
-  deleteCart() {
-    return '';
+  // * 장바구니 삭제
+  async deleteCart(customerId: number, cartId: number) {
+    const cart = await this.prisma.cart.findUnique({ where: { id: cartId } });
+    // ! 해당하는 카트가 없는 경우
+    if (!cart) {
+     throw new HttpException('카트를 다시 확인해주세요.', HttpStatus.NOT_FOUND);
+    }
+    
+    // ! 카트 삭제 권한이 없는 경우
+    if (cart.CustomerId !== customerId) {
+     throw new HttpException('삭제 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    }
+
+    await this.prisma.cart.delete({ where: { id: cart.id } });
+
+    return { message: '장바구니 삭제가 완료되었습니다.' };
   }
 }
