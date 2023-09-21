@@ -25,6 +25,7 @@ password  String
 point     Int
 Orders    Order[]
 Comments  Comment[]
+Carts     Cart[]
 }
 
 model Store {
@@ -35,7 +36,7 @@ info      String
 Menus     Menu[]
 Orders    Order[]
 Comments  Comment[]
-Owner     Owner    @relation(fields: [OwnerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+Owner     Owner?    @relation(fields: [OwnerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Menu {
@@ -45,7 +46,7 @@ name     String
 image    String?
 price    Int
 Store    Store    @relation(fields: [StoreId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-Details  OrderDetail[]
+Carts    Cart[]
 }
 
 model Order {
@@ -54,20 +55,23 @@ CustomerId  Int
 StoreId     Int
 price       Int
 status      Int
-Details     OrderDetail[]
+Carts       Cart[]
 Customer    Customer   @relation(fields: [CustomerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 Store       Store      @relation(fields: [StoreId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 Comment     Comment?   
 }
 
-model OrderDetail {
+model Cart {
 id          Int    @id @default(autoincrement())
-OrderId     Int
+OrderId     Int?
 MenuId      Int
+CustomerId  Int
 count       Int
-totalPrice  Int
-Order       Order  @relation(fields: [OrderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-Menu        Menu   @relation(fields: [MenuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+price       Int
+status      String @default("ordered")
+Order       Order?  @relation(fields: [OrderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+Menu        Menu  @relation(fields: [MenuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+Customer    Customer @relation(fields: [CustomerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Comment {

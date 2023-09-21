@@ -6,6 +6,7 @@ import { CustomerModule } from './customer/customer.module';
 import { OwnerModule } from './owner/owner.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
+import { CartsModule } from './carts/carts.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
     PrismaModule,
     CustomerModule,
     OwnerModule,
+    CartsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
