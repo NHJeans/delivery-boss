@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+
+# S3로부터 받은 .zip file이 압축해제 되는 곳
+files:
+  - source: /
+    destination: /home/ubuntu/delivery-boss
+    overwrite: yes
+file_exists_behavior: OVERWRITE
+
+# 파일에 대한 권한 설정
+permissions:
+  - object: /home/ubuntu/delivery-boss
+    owner: ubuntu
+    group: ubuntu
+
+# codedeploy가 참조할 스크립트의 위치
+hooks:
+  AfterInstall:
+    - location: scripts/deploy.sh
+      timeout: 60
+      runas: ubuntu
