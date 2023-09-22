@@ -11,11 +11,17 @@ export class OwnerSignupService {
     const { email, password } = signupDto;
 
     //* 이메일 중복 확인
-    const existingUser = await this.prisma.owner.findUnique({
+    const existingOwner = await this.prisma.owner.findUnique({
       where: { email },
     });
-    if (existingUser) {
+    if (existingOwner) {
       throw new HttpException('이메일이 이미 사용중입니다.', HttpStatus.BAD_REQUEST);
+    }
+    const existingCustomer = await this.prisma.customer.findUnique({
+      where: { email },
+    });
+    if (existingCustomer) {
+      throw new HttpException('이메일이 이미 사용 중입니다.', HttpStatus.BAD_REQUEST);
     }
 
     //* 비밀번호 해싱

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { OrderCreateDto } from './dto/order.create.dto';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class OrdersService {
