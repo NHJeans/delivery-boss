@@ -41,10 +41,14 @@ export class OrdersService {
     }
 
     // * 3. 주문 등록 시 사용할 업장 정보를 가져오기
-    const storeId = await this.prisma.menu.findUnique({
+    const info = await this.prisma.cart.findUnique({
       where: { id: body.cartIds[0], },
       select: {
-        StoreId: true,
+        Menu: {
+          select: {
+            StoreId: true,
+          }
+        }
       } 
     });
 
@@ -53,7 +57,7 @@ export class OrdersService {
       // * 4-1 주문을 생성하면서 관계 형셩
       await this.prisma.order.create({ data: {
         CustomerId: customerId,
-        StoreId: storeId.StoreId,
+        StoreId: info.Menu.StoreId,
         price: totalPrice,
         Carts: {
           connect: body.cartIds.map((id) => ({ id })),
@@ -71,12 +75,21 @@ export class OrdersService {
       isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
     });
 
-    return { message: '주문 등록이 완료되었습니다.' };
+      return { message: '주문 등록이 완료되었습니다.' };
     }
     
-  findAll() {
-    return `This action returns all orders`;
-  }
+    // * 주문 전체 조회
+    async getAllOrders(user: any) {
+      let whereType;
+      if (user.type === 'Owner') {
+        const store = await this.prisma.store.findFirst({ where: { OwnerId: user.id }, select: { id: true } });
+        whereType = { StoreId: store.id };
+      } else {
+        whereType = { [`${user.type}Id`]: user.id };
+      }
+
+      return await this.prisma.order.findMany({ where: whereType });
+    }
 
   findOne(id: number) {
     return `This action returns a #${id} order`;

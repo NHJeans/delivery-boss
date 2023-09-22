@@ -10,11 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserType {
+  Owner
+  Customer
+}
+
 model Owner {
 id        Int      @id @default(autoincrement())
 email     String   @unique
 password  String
 point     Int
+type      UserType @default(Owner)
 Stores    Store[]
 }
 
@@ -23,6 +29,7 @@ id        Int      @id @default(autoincrement())
 email     String   @unique
 password  String
 point     Int
+type      UserType @default(Customer)
 Orders    Order[]
 Comments  Comment[]
 Carts     Cart[]

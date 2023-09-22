@@ -14,16 +14,22 @@ export class OrdersController {
   @Post()
   async createOrder(@Body() body: OrderCreateDto) {
     // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
-    const customerId: number = 1;
+    const customerId: number = 3;
 
     return this.ordersService.createOrder(customerId, body);
   }
 
-  // * 주문 등록
-  @ApiOperation({ summary: '주문 등록' })
+  // * 주문 전체 조회
+  @ApiOperation({ summary: '주문 전체 조회' })
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  async getAllOrders() {
+    // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
+    const user = {
+      id: 3,
+      type: 'Customer',
+    }
+
+    return this.ordersService.getAllOrders(user);
   }
 
   // * 주문 등록
