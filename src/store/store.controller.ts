@@ -1,11 +1,12 @@
 // ? 업장 메인 와이어프레임 추가 (업장 등록 CRUD)
 // ? 업장 - 가게 연결, api 명세서 수정 필요
 
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 // TODO 사장님은 업장 정보를 등록 및 수정, 삭제를 할 수 있어야 한다 -> 등록 / 수정 / 삭제 시 사장 권한 확인
 // TODO 사장님은 업장 정보를 오직 1개만 갖고 있을 수 있어야 합니다.
@@ -20,6 +21,8 @@ export class StoreController {
   // 업장 생성
   @ApiOperation({ summary: '업장 생성' })
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async createStore(@Body() createStoreDto: CreateStoreDto) {
     return this.storeService.create(createStoreDto);
   }
@@ -41,6 +44,8 @@ export class StoreController {
   // 업장 정보 수정
   @ApiOperation({ summary: '업장 정보 수정' })
   @Put(':storeId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async updateComment(@Param('storeId') id: string, @Body() updateStoreDto: UpdateStoreDto) {
     return this.storeService.updateComment(+id, updateStoreDto);
   }
@@ -48,6 +53,8 @@ export class StoreController {
   // 업장 정보 삭제
   @ApiOperation({ summary: '업장 정보 삭제' })
   @Delete(':storeId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async deleteCart(@Param('storeId') id: string) {
     return this.storeService.deleteCOmment(+id);
   }

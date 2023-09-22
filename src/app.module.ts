@@ -8,6 +8,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 import { OwnerModule } from './owner/owner.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StoreModule } from './store/store.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -20,6 +21,7 @@ import { StoreModule } from './store/store.module';
     CustomerModule,
     OwnerModule,
     StoreModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
