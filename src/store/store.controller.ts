@@ -5,7 +5,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 // TODO 사장님은 업장 정보를 등록 및 수정, 삭제를 할 수 있어야 한다 -> 등록 / 수정 / 삭제 시 사장 권한 확인
 // TODO 사장님은 업장 정보를 오직 1개만 갖고 있을 수 있어야 합니다.
@@ -13,6 +13,7 @@ import { ApiOperation } from '@nestjs/swagger';
 // ? 가게 이미지 추가하려면 스키마 변경해야함.
 
 @Controller('/stores')
+@ApiTags('store CRUD')
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
