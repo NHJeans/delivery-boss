@@ -4,6 +4,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
+@ApiTags('comment CRUD')
 export class CommentService {
   constructor(private prisma: PrismaService) {}
 
