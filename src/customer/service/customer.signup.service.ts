@@ -11,13 +11,18 @@ export class CustomerSignupService {
     const { email, password } = signupDto;
 
     //* 이메일 중복 확인
-    const existingUser = await this.prisma.customer.findUnique({
+    const existingCustomer = await this.prisma.customer.findUnique({
       where: { email },
     });
-    if (existingUser) {
+    if (existingCustomer) {
       throw new HttpException('이메일이 이미 사용중입니다.', HttpStatus.BAD_REQUEST);
     }
-
+    const existingOwner = await this.prisma.owner.findUnique({
+      where: { email },
+    });
+    if (existingOwner) {
+      throw new HttpException('이메일이 이미 사용 중입니다.', HttpStatus.BAD_REQUEST);
+    }
     //* 비밀번호 해싱
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -26,7 +31,6 @@ export class CustomerSignupService {
       data: {
         email,
         password: hashedPassword,
-        point: 0,
       },
     });
 
