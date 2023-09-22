@@ -28,13 +28,6 @@ jobs:
           node-version: 18.x
           cache: 'npm'
 
-      # 환경 변수 세팅
-      - name: setup environment variables
-        run: |
-          touch .env
-          echo "DATABASE_URL = ${{ secrets.DATABASE_URL }}" >> .env
-          echo "PORT = ${{ secrets.PORT }}" >> .env
-
       # 패키지 설치
       - name: setup packages
         run: npm install
