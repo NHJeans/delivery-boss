@@ -72,9 +72,9 @@ export class CustomerLoginService {
     });
     return { message: '로그아웃에 성공하였습니다.' };
   }
-  async findOne(id: number) {
+  async findOne(userId: number) {
     return await this.prisma.customer.findUnique({
-      where: { id },
+      where: { id: userId },
     });
   }
 }

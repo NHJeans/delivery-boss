@@ -10,24 +10,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserType {
+  Owner
+  Customer
+}
+
 // Owner : Store 1:1
 model Owner {
 id        Int      @id @default(autoincrement())
 email     String   @unique
 password  String
 point     Int
+type      UserType @default(Owner)
 refreshToken  String?
-Stores    Store?   
+Stores    Store?
 }
 
 model Customer {
 id        Int      @id @default(autoincrement())
 email     String   @unique
 password  String
+type      UserType @default(Customer)
 point     Int      @default(1000000)
 refreshToken  String?
 Orders    Order[]
 Comments  Comment[]
+Carts     Cart[]
 }
 
 model Store {
@@ -38,7 +46,7 @@ info      String
 Menus     Menu[]
 Orders    Order[]
 Comments  Comment[]
-Owner     Owner    @relation(fields: [OwnerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+Owner     Owner?    @relation(fields: [OwnerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Menu {
@@ -48,7 +56,7 @@ name     String
 image    String?
 price    Int
 Store    Store    @relation(fields: [StoreId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-Details  OrderDetail[]
+Carts    Cart[]
 }
 
 model Order {
@@ -56,21 +64,24 @@ id          Int          @id @default(autoincrement())
 CustomerId  Int
 StoreId     Int
 price       Int
-status      Int
-Details     OrderDetail[]
+status      String @default("ordered")
+Carts       Cart[]
 Customer    Customer   @relation(fields: [CustomerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 Store       Store      @relation(fields: [StoreId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-Comment     Comment?   
+Comment     Comment?  
 }
 
-model OrderDetail {
+model Cart {
 id          Int    @id @default(autoincrement())
-OrderId     Int
+OrderId     Int?
 MenuId      Int
+CustomerId  Int
 count       Int
-totalPrice  Int
-Order       Order  @relation(fields: [OrderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-Menu        Menu   @relation(fields: [MenuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+price       Int
+status      String @default("added")
+Order       Order?  @relation(fields: [OrderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+Menu        Menu  @relation(fields: [MenuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+Customer    Customer @relation(fields: [CustomerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Comment {

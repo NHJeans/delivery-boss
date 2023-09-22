@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 //* JWT 토큰을 이용한 전략 구현
 @Injectable()
-export class OwnerJwtStrategy extends PassportStrategy(Strategy, 'customer-jwt') {
+export class OwnerJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly ownerLoginService: OwnerLoginService,
     private readonly configService: ConfigService
@@ -19,8 +19,8 @@ export class OwnerJwtStrategy extends PassportStrategy(Strategy, 'customer-jwt')
     });
   }
 
-  async validate(payload: { id: number }) {
-    const customer = await this.ownerLoginService.findOne(payload.id);
+  async validate(payload: { userId: number }) {// ! 2023.09.22. userId 값으로 받아올 수 있게 수정
+    const customer = await this.ownerLoginService.findOne(payload.userId);
 
     if (!customer) {
       throw new UnauthorizedException();
