@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@n
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { AuthEntity } from 'src/auth/entity/auth.entity';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CustomerLoginDto } from '../dto/customer.login.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class CustomerLoginService {
@@ -14,7 +14,7 @@ export class CustomerLoginService {
     private readonly jwtService: JwtService
   ) {}
   //* 사용자가 이메일과 비밀번호로 로그인 요청
-  async login(@Res() res: Response, loginDto: CustomerLoginDto): Promise<AuthEntity> {
+  async login(loginDto: CustomerLoginDto, res: Response): Promise<void> {
     const { email, password } = loginDto;
     //* 제공된 이메일에 해당하는 사용자 정보를 데이터베이스에서 조회
     const user = await this.prisma.customer.findUnique({
@@ -39,9 +39,10 @@ export class CustomerLoginService {
       where: { id: user.id },
       data: { refreshToken },
     });
-    return { message: '로그인에 성공하였습니다.', accessToken };
+    res.setHeader('Authorization', `Bearer ${accessToken}`);
+    res.json({ message: '로그인에 성공하였습니다.' });
   }
-  async renewAccessToken(refreshToken: string): Promise<AuthEntity> {
+  async renewAccessToken(refreshToken: string, res: Response): Promise<void> {
     let userId: number;
     try {
       const decoded = this.jwtService.verify(refreshToken, { secret: this.configService.get<string>('JWT_REFRESH_SECRET') });
@@ -60,7 +61,8 @@ export class CustomerLoginService {
     }
     const jwtPayload = { userId: user.id };
     const newAccessToken = this.jwtService.sign(jwtPayload, { expiresIn: '5m', secret: this.configService.get<string>('JWT_SECRET') });
-    return { message: '새로운 액세스 토큰이 생성되었습니다.', accessToken: newAccessToken };
+    res.setHeader('Authorization', `Bearer ${newAccessToken}`);
+    res.json({ message: '로그인에 성공하였습니다.' });
   }
   //* 로그아웃 요청
   async logout(userId: number) {
