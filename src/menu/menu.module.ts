@@ -5,8 +5,11 @@ import { multerDiskOptions } from 'src/utils/multer.config';
 import { MenuController } from './menu.controller';
 import { MenuService } from './menu.service';
 
+
 @Module({
-  imports: [MulterModule.register(multerDiskOptions)],
+  imports: [
+    // AuthModule,
+    MulterModule.register(multerDiskOptions)],
   controllers: [MenuController],
   providers: [PrismaService, MenuService],
 })

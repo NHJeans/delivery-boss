@@ -4,9 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CustomerModule } from './customer/customer.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
+import { MenuModule } from './menu/menu.module';
 import { OwnerModule } from './owner/owner.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { MenuModule } from './menu/menu.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -18,6 +19,7 @@ import { MenuModule } from './menu/menu.module';
     MenuModule,
     CustomerModule,
     OwnerModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
