@@ -88,12 +88,48 @@ export class OrdersService {
         whereType = { [`${user.type}Id`]: user.id };
       }
 
-      return await this.prisma.order.findMany({ where: whereType });
+      // Todo: 프론트 구현하면서 리턴해줄 키-값 수정하기
+      const orders = await this.prisma.order.findMany({ where: whereType });
+      return orders.map((order) => {
+        return {
+          id: order.id,
+          CustomerId: order.CustomerId,
+          StoreId: order.StoreId,
+          price: order.price,
+          status: order.status,
+        }
+      })
     }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
-  }
+    // * 주문 상세 조회
+    async getOneOrder(orderId: number, user: any) {
+      const order = await this.prisma.order.findUnique({ where: { id: orderId } });
+      // ! 해당하는 주문이 없는 경우
+      if (!order) {
+        throw new HttpException('주문 번호를 다시 확인해주세요.', HttpStatus.NOT_FOUND);
+      };
+
+      // ! 주문 조회 권한이 없는 경우 (상세 조회 요청 클라이언트가 사장인 경우, 유저인 경우)
+      if (user.type === 'Owner') {
+        const store = await this.prisma.store.findFirst({ where: { OwnerId: user.id } });
+        if (order.StoreId !== store.id) {
+          throw new HttpException('조회 권한이 없습니다.', HttpStatus.FORBIDDEN);
+         }
+      } else {
+        if (order.CustomerId !== user.id) {
+          throw new HttpException('조회 권한이 없습니다.', HttpStatus.FORBIDDEN);
+        }
+      }
+      
+      // Todo: 프론트 구현하면서 리턴해줄 키-값 수정하기
+      return {
+        id: order.id,
+        CustomerId: order.CustomerId,
+        StoreId: order.StoreId,
+        price: order.price,
+        status: order.status,
+      }
+    }
 
   update(id: number, updateOrderDto: any) {
     return `This action updates a #${id} order`;
