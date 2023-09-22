@@ -40,6 +40,7 @@ export class OwnerLoginService {
       data: { refreshToken },
     });
     res.setHeader('Authorization', `Bearer ${accessToken}`);
+    //res.cookie('Authorization', `Bearer ${accessToken}`);
     res.json({ message: '로그인에 성공하였습니다.' });
   }
   async renewAccessToken(refreshToken: string, res: Response): Promise<void> {
@@ -62,6 +63,7 @@ export class OwnerLoginService {
     const jwtPayload = { userId: user.id };
     const newAccessToken = this.jwtService.sign(jwtPayload, { expiresIn: '5m', secret: this.configService.get<string>('JWT_SECRET') });
     res.setHeader('Authorization', `Bearer ${newAccessToken}`);
+    //res.cookie('Authorization', `Bearer ${newAccessToken}`);
     res.json({ message: '새로운 액세스 토큰이 생성되었습니다.' });
   }
   //* 로그아웃 요청
@@ -72,9 +74,9 @@ export class OwnerLoginService {
     });
     return { message: '로그아웃에 성공하였습니다.' };
   }
-  async findOne(id: number) {
-    return await this.prisma.customer.findUnique({
-      where: { id },
+  async findOne(userId: number) {
+    return await this.prisma.owner.findUnique({
+      where: { id: userId},
     });
   }
 }
