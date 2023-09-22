@@ -21,14 +21,14 @@ export class MenuService {
 
   async getMenus(menuWhereInput: Prisma.MenuWhereInput): Promise<Menu[]> {
     return this.prisma.menu.findMany({
-      where: menuWhereInput
+      where: menuWhereInput,
     });
   }
 
   async getMenu(menuWhereUniqueInput: Prisma.MenuWhereUniqueInput): Promise<Menu> {
     return this.prisma.menu.findUniqueOrThrow({
-      where: menuWhereUniqueInput
-    })
+      where: menuWhereUniqueInput,
+    });
   }
 
   async updateMenu(updateMenuDto: UpdateMenuDto): Promise<Menu> {
@@ -40,14 +40,14 @@ export class MenuService {
       data: {
         name: updateMenuDto.name,
         price: updateMenuDto.price,
-        image: updateMenuDto.image
+        image: updateMenuDto.image,
       },
     });
   }
 
   async deleteMenu(where: Prisma.MenuWhereUniqueInput): Promise<Menu> {
     return this.prisma.menu.delete({
-      where
+      where,
     });
   }
 }

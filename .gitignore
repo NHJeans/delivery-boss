@@ -2,7 +2,7 @@
 /dist
 /node_modules
 .env
-/public
+/uploads
 
 # Logs
 logs

@@ -3,8 +3,16 @@ import { Type } from "class-transformer";
 import { IsEmpty, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class menuDto { //* 스웨거 작성
+    @ApiProperty({
+        name: 'StoreId',
+        type: Number,
+    })
     StoreId: number;
     
+    @ApiProperty({
+        name: 'menuId',
+        type: Number,
+    })
     menuId: number;
 
     @IsString()
@@ -24,6 +32,10 @@ export class menuDto { //* 스웨거 작성
     })
     price: number;
 
+    @ApiProperty({
+        name: 'image',
+        type: String,
+    })
     image: string;
 }
 
