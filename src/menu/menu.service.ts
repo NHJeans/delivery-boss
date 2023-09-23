@@ -26,7 +26,7 @@ export class MenuService {
         name: createMenuDto.name,
       },
     });
-    if(menu) {
+    if (menu) {
       throw new HttpException('이미 존재하는 메뉴입니다.', HttpStatus.BAD_REQUEST);
     }
 
@@ -66,7 +66,7 @@ export class MenuService {
     const menu = await this.prisma.menu.findUnique({
       where: menuWhereUniqueInput,
     });
-    if(!menu){
+    if (!menu) {
       throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 
@@ -76,7 +76,7 @@ export class MenuService {
   //* 메뉴 수정
   async updateMenu(updateMenuDto: UpdateMenuDto): Promise<Menu> {
     // 가게 및 메뉴 확인
-    await this.getMenu({id: updateMenuDto.menuId, StoreId: updateMenuDto.StoreId});
+    await this.getMenu({ id: updateMenuDto.menuId, StoreId: updateMenuDto.StoreId });
 
     // 메뉴 중복 확인
     const menu = await this.prisma.menu.findFirst({
@@ -84,7 +84,7 @@ export class MenuService {
         name: updateMenuDto.name,
       },
     });
-    if(menu) {
+    if (menu) {
       throw new HttpException('이미 존재하는 메뉴입니다.', HttpStatus.BAD_REQUEST);
     }
 
@@ -105,7 +105,7 @@ export class MenuService {
   //* 메뉴 삭제
   async deleteMenu(where: Prisma.MenuWhereUniqueInput): Promise<Menu> {
     // 가게 및 메뉴 확인
-    await this.getMenu({id: where.id, StoreId: where.StoreId});
+    await this.getMenu({ id: where.id, StoreId: where.StoreId });
 
     // 메뉴 삭제
     return this.prisma.menu.delete({
