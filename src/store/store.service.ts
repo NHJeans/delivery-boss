@@ -14,16 +14,14 @@ export class StoreService {
   // TODO 업장 정보 목록은 모두가 볼 수 있어야 합니다.
 
   // 업장 정보 생성
-  async createStore(createStoreDto: CreateStoreDto, req): Promise<Store> {
+  async createStore(req: any, createStoreDto: CreateStoreDto): Promise<Store> {
     // OwnerId가 5 이상일 떄 에러남 => 등록된 OwnerId가 4까지라서 에러 났음
     // TODO: OwnerId 정보를 담을 방법 정해서 코드 수정, (지금은 body에서 직접 입력, Owner : Store = 1 : 1)
     // ? findFirst -> findUnique 바꾸면 where 에서 에러남(where 밑에 빨간 줄)
     // ? -> OwnerIdr가 unique 값이 아니라 그렇당 코드를 의심하지 말고 항상 나를 의심해보쟈!! ><
     // 프리즈마에서 초기 1:1 유니크 연결인데 1:n 관계로 설정해둬서 문제가 생김
 
-    console.log(req.user);
-
-    const store = await this.prisma.store.findUnique({ where: { OwnerId: +req.user.id } });
+    const store: Store = await this.prisma.store.findUnique({ where: { OwnerId: +req.user.id } });
     if (store) {
       throw new HttpException('이미 가게가 등록되어 있습니다.', HttpStatus.BAD_REQUEST);
     }
@@ -49,9 +47,9 @@ export class StoreService {
 
   // 업장 정보 수정
   // TODO 로그인 정보로 수정 권한 추가
-  async updateStore(id: number, updateStoreDto: UpdateStoreDto, req: any): Promise<object> {
+  async updateStore(req: any, id: number, updateStoreDto: UpdateStoreDto): Promise<object> {
     // ? 여기는 return 왜 안붙여도 되는지 궁금하당
-    const store = await this.prisma.store.findUnique({ where: { id } });
+    const store: Store = await this.prisma.store.findUnique({ where: { id } });
 
     if (!store) {
       throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
@@ -69,8 +67,8 @@ export class StoreService {
   // 업장 삭제
   // TODO 로그인 정보로 삭제 권한 추가
   // delete 완료 후 에러 메시지 작성
-  async deleteStore(id: number, req: any): Promise<object> {
-    const store = await this.prisma.store.findUnique({ where: { id } });
+  async deleteStore(req: any, id: number): Promise<object> {
+    const store: Store = await this.prisma.store.findUnique({ where: { id } });
 
     if (!store) {
       throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);

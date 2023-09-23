@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Patch, UseGuards, Request } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 // TODO 사용자는 음식점에 대한 리뷰를 작성하고, 평점을 남길 수 있어야 합니다.
 // TODO Create: 주문번호의 고객 ID 검증, comment db에 추가, CostomerId, OderId, StoreId 도 추가 필요
@@ -19,9 +21,11 @@ export class CommentController {
   // 리뷰 작성
   @ApiOperation({ summary: '리뷰 작성' })
   @Post('orders/:orderId')
+  @UseGuards(AuthGuard('customer-jwt'))
+  @ApiBearerAuth()
   // * param은 string으로만 받을 수 있는 건가? 왜 다 string이지;; 처음부터 number로 받으면 안되나?
-  async createComment(@Param('orderId') orderId: string, @Body() createCommentDto: CreateCommentDto) {
-    return this.commentService.createComment(+orderId, createCommentDto);
+  async createComment(@Request() req: Request, @Param('orderId') orderId: string, @Body() createCommentDto: CreateCommentDto) {
+    return this.commentService.createComment(req, +orderId, createCommentDto);
   }
 
   // 가게 별 리뷰 조회
@@ -41,14 +45,18 @@ export class CommentController {
   // 리뷰 수정
   @ApiOperation({ summary: '리뷰 수정' })
   @Put(':commentId')
-  async updateComment(@Param('commentId') commentId: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.updateComment(+commentId, updateCommentDto);
+  @UseGuards(AuthGuard('customer-jwt'))
+  @ApiBearerAuth()
+  async updateComment(@Request() req: Request, @Param('commentId') commentId: string, @Body() updateCommentDto: UpdateCommentDto) {
+    return this.commentService.updateComment(req, +commentId, updateCommentDto);
   }
 
   // 리뷰 삭제
   @ApiOperation({ summary: '리뷰 삭제' })
   @Delete(':commentId')
-  async deleteComment(@Param('commentId') commentId: string) {
-    return this.commentService.deleteComment(+commentId);
+  @UseGuards(AuthGuard('customer-jwt'))
+  @ApiBearerAuth()
+  async deleteComment(@Request() req: Request, @Param('commentId') commentId: string) {
+    return this.commentService.deleteComment(req, +commentId);
   }
 }

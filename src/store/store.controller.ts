@@ -24,7 +24,7 @@ export class StoreController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async createStore(@Request() req: Request, @Body() createStoreDto: CreateStoreDto) {
-    return this.storeService.createStore(createStoreDto, req);
+    return this.storeService.createStore(req, createStoreDto);
   }
 
   // 전체 업장 조회
@@ -47,7 +47,7 @@ export class StoreController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async updateComment(@Request() req: Request, @Param('storeId') id: string, @Body() updateStoreDto: UpdateStoreDto) {
-    return this.storeService.updateStore(+id, updateStoreDto, req);
+    return this.storeService.updateStore(req, +id, updateStoreDto);
   }
 
   // 업장 정보 삭제
@@ -56,6 +56,6 @@ export class StoreController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async deleteCart(@Request() req: Request, @Param('storeId') id: string) {
-    return this.storeService.deleteStore(+id, req);
+    return this.storeService.deleteStore(req, +id);
   }
 }
