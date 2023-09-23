@@ -27,7 +27,7 @@ export class OrdersController {
     const user = {
       id: 3,
       type: 'Owner',
-    }
+    };
 
     return this.ordersService.getAllOrders(user);
   }
@@ -39,7 +39,7 @@ export class OrdersController {
     // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
     const user = {
       id: 3,
-    }
+    };
 
     return this.ordersService.getOneOrder(orderId, user);
   }

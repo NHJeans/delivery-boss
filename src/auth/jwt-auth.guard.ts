@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {}
+export class JwtAuthGuard extends AuthGuard('ownerjwt') {}
 
 //? 로그인 후 인증된 사용자만 접근할 수 있도록 하는 Guard
 // import {useGuards} from '@nestjs/common';
