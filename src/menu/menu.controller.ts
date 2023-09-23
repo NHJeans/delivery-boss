@@ -3,12 +3,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuService } from './menu.service';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AuthEntity } from 'src/auth/entity/auth.entity';
+import { ApiFile } from 'src/utils/decorator/api-file.decorator';
 
 
 @Controller('stores')
+@ApiTags('menu CRUD')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
@@ -16,7 +18,7 @@ export class MenuController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 생성'})
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiFile('file')
   @Post('/:store_id/menus')
   @UsePipes(ValidationPipe)
   createMenu(
@@ -43,7 +45,7 @@ export class MenuController {
 
 
   @ApiOperation({ summary: '특정 메뉴 조회'})
-  @Get('/:stored_id/menus/:menu_id')
+  @Get('/:store_id/menus/:menu_id')
   getMenu(@Param() params: { store_id: number; menu_id: number }) {
     return this.menuService.getMenu({ id: Number(params.menu_id) });
   }
@@ -53,7 +55,8 @@ export class MenuController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 수정'})
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiFile('file')
+  // @UseInterceptors(FileInterceptor('file'))
   @Put('/:store_id/menus/:menu_id') //* params DTO
   @UsePipes(ValidationPipe)
   updateMenu(
