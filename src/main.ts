@@ -18,6 +18,7 @@ async function bootstrap() {
     })
   );
 
+  app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '../src', 'public'));
   app.setBaseViewsDir(join(__dirname, '../src', 'view'));
   app.setViewEngine('hbs');
@@ -27,6 +28,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT);
+  await app.listen(3000);
 }
 bootstrap();
