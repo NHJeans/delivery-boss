@@ -6,9 +6,10 @@ import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AuthEntity } from 'src/auth/entity/auth.entity';
 import { ApiFile } from 'src/utils/decorator/api-file.decorator';
+import { Menu } from '@prisma/client';
 
 
-@Controller('/stores/:store_id/menus')
+@Controller('/stores/:storeId/menus')
 @ApiTags('menu CRUD')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
@@ -18,7 +19,7 @@ export class MenuController {
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 생성'})
   @ApiParam({
-    name: 'store_id',
+    name: 'storeId',
     type: 'number',
   })
   @ApiFile('file')
@@ -31,10 +32,10 @@ export class MenuController {
       })
     )
     file: Express.Multer.File,
-    @Param('store_id') store_id: number,
+    @Param('storeId') storeId: number,
     @Body() data: CreateMenuDto
-  ): Promise<{ id: number; StoreId: number; name: string; image: string; price: number; }> {
-    data = { StoreId: store_id, ...data, image: file.path };
+  ): Promise<Menu> {
+    data = { StoreId: storeId, ...data, image: file.path };
 
     return this.menuService.createMenu(data);
   }
@@ -42,27 +43,27 @@ export class MenuController {
 
   @ApiOperation({ summary: '메뉴 전체 조회'})
   @ApiParam({
-    name: 'store_id',
+    name: 'storeId',
     type: 'number',
   })
   @Get('/')
-  getMeuns(@Param('store_id') store_id: number) {
-    return this.menuService.getMenus({ StoreId: store_id });
+  getMeuns(@Param('storeId') storeId: number) {
+    return this.menuService.getMenus({ StoreId: storeId });
   }
 
 
   @ApiOperation({ summary: '특정 메뉴 조회'})
   @ApiParam({
-    name: 'store_id',
+    name: 'storeId',
     type: 'number',
   })
   @ApiParam({
-    name: 'menu_id',
+    name: 'menuId',
     type: 'number',
   })
-  @Get('/:store_id/menus/:menu_id')
-  getMenu(@Param() params: { store_id: number; menu_id: number }) {
-    return this.menuService.getMenu({ id: Number(params.menu_id) });
+  @Get('/:storeId/menus/:menuId')
+  getMenu(@Param() params: { storeId: number; menuId: number }) {
+    return this.menuService.getMenu({ id: Number(params.menuId) });
   }
 
   
@@ -71,16 +72,16 @@ export class MenuController {
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 수정'})
   @ApiParam({
-    name: 'store_id',
+    name: 'storeId',
     type: 'number',
   })
   @ApiParam({
-    name: 'menu_id',
+    name: 'menuId',
     type: 'number',
   })
   @ApiFile('file')
   // @UseInterceptors(FileInterceptor('file'))
-  @Put('/:menu_id') //* params DTO
+  @Put('/:menuId') //* params DTO
   @UsePipes(ValidationPipe)
   updateMenu(
     @UploadedFile(
@@ -89,11 +90,11 @@ export class MenuController {
       })
     )
     file: Express.Multer.File,
-    @Param() params: { store_id: number; menu_id: number },
+    @Param() params: { storeId: number; menuId: number },
     @Body() data: UpdateMenuDto
   ) {
 
-    data = { StoreId: Number(params.store_id), menuId: Number(params.menu_id), ...data, image: file.path };
+    data = { StoreId: Number(params.storeId), menuId: Number(params.menuId), ...data, image: file.path };
     return this.menuService.updateMenu(data);
   }
 
@@ -103,15 +104,15 @@ export class MenuController {
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 삭제'})
   @ApiParam({
-    name: 'store_id',
+    name: 'storeId',
     type: 'number',
   })
   @ApiParam({
-    name: 'menu_id',
+    name: 'menuId',
     type: 'number',
   })
-  @Delete('/:menu_id')
-  deleteMenu(@Param() params: { store_id: number; menu_id: number }) {
-    return this.menuService.deleteMenu({ id: Number(params.menu_id) });
+  @Delete('/:menuId')
+  deleteMenu(@Param() params: { storeId: number; menuId: number }) {
+    return this.menuService.deleteMenu({ id: Number(params.menuId) });
   }
 }
