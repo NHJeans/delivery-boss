@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{!-- Bootstrap --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+    <title>우리 동네 배달 대장</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+    body {
+        font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    .title {
+        width: 80%;
+        height: 20%;
+
+        position: absolute;
+        top: 30%;
+        left: 50%;
+
+        margin-left: -40%;
+
+        text-align: center;
+    }
+
+    .title>h1 {
+        font-size: 5vw;
+    }
+
+    .title>h2 {
+        margin: 2vw;
+
+        font-size: 1.2vw;
+    }
+
+    .title>button {
+        margin: 3vw;
+
+        font-size: 1.5vw;
+
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    .title>button:hover {
+        border-color: skyblue;
+        background-color: skyblue;
+
+        animation: jelly 0.3s
+    }
+
+    @keyframes jelly {
+        25% {
+            transform: scale(0.9, 1.1);
+        }
+
+        50% {
+            transform: scale(1.1, 0.9);
+        }
+
+        75% {
+            transform: scale(0.95, 1.05);
+        }
+    }
+</style>
+
+<body>
+    <div class="title">
+        <h1>우리 동네 배달 대장</h1>
+        <h2>당신은 누구야? 사장님? 고객님?</h2>
+        <button class="btn btn-primary">사장님</button>
+        <button class="btn btn-primary">고객님</button>
+    </div>
+</body>
+
+</html>
