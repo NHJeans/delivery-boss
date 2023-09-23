@@ -8,13 +8,14 @@ export class CommentService {
   constructor(private prisma: PrismaService) {}
 
   // 리뷰 작성
-  // TODO orderId에 해당하는 리뷰를 작성한다. orderId 없으면 -> 업장 정보가 존재하지 않습니다. 반환
-  // TODO orderId에 해당하는 리뷰가 있는지 확인 -> 있으면 이미 리뷰를 작성하였습니다. 반환
-  // TODO order 테이블에서 orderId에 해당하는 customerId, storeId 찾기
+  // orderId에 해당하는 리뷰를 작성한다. orderId 없으면 -> 업장 정보가 존재하지 않습니다. 반환
+  // orderId에 해당하는 리뷰가 있는지 확인 -> 있으면 이미 리뷰를 작성하였습니다. 반환
+  // order 테이블에서 orderId에 해당하는 customerId, storeId 찾기
   // TODO customerId로 로그인 정보 비교 후 권한 확인
-  // TODO createCommentDto(review, star), findunique(storeId, customerId), param(orderId)
+  // createCommentDto(review, star), findunique(storeId, customerId), param(orderId)
 
   async createComment(orderId: number, createCommentDto: CreateCommentDto) {
+    // TODO const 뒤 revew 타입 지정 해야함! 근데 뭘로...?
     const review = await this.prisma.comment.findFirst({ where: { OrderId: orderId } });
 
     if (review) {

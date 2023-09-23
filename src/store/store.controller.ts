@@ -24,21 +24,21 @@ export class StoreController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async createStore(@Body() createStoreDto: CreateStoreDto) {
-    return this.storeService.create(createStoreDto);
+    return this.storeService.createStore(createStoreDto);
   }
 
   // 전체 업장 조회
   @ApiOperation({ summary: '전체 업장 조회' })
   @Get()
   async findAllComments() {
-    return this.storeService.findAllComments();
+    return this.storeService.findAllStores();
   }
 
   // 세부 업장 조회
   @ApiOperation({ summary: '세부 업장 조회' })
   @Get(':storeId')
   async findOneComment(@Param('storeId') id: string) {
-    return this.storeService.findOneComment(+id);
+    return this.storeService.findOneStore(+id);
   }
 
   // 업장 정보 수정
@@ -47,7 +47,7 @@ export class StoreController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async updateComment(@Param('storeId') id: string, @Body() updateStoreDto: UpdateStoreDto) {
-    return this.storeService.updateComment(+id, updateStoreDto);
+    return this.storeService.updateStore(+id, updateStoreDto);
   }
 
   // 업장 정보 삭제
@@ -56,6 +56,6 @@ export class StoreController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async deleteCart(@Param('storeId') id: string) {
-    return this.storeService.deleteCOmment(+id);
+    return this.storeService.deleteStore(+id);
   }
 }
