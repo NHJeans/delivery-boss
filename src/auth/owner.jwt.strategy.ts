@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 //* JWT 토큰을 이용한 전략 구현
 @Injectable()
-export class OwnerJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class OwnerJwtStrategy extends PassportStrategy(Strategy, 'owner-jwt') {
   constructor(
     private readonly ownerLoginService: OwnerLoginService,
     private readonly configService: ConfigService
