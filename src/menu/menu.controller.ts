@@ -8,7 +8,7 @@ import { AuthEntity } from 'src/auth/entity/auth.entity';
 import { ApiFile } from 'src/utils/decorator/api-file.decorator';
 import { Menu } from '@prisma/client';
 
-
+//Todo: 중복되는 코드 정리 필요
 @Controller('/stores/:storeId/menus')
 @ApiTags('menu CRUD')
 export class MenuController {
@@ -61,9 +61,9 @@ export class MenuController {
     name: 'menuId',
     type: 'number',
   })
-  @Get('/:storeId/menus/:menuId')
+  @Get('/:menuId')
   getMenu(@Param() params: { storeId: number; menuId: number }) {
-    return this.menuService.getMenu({ id: Number(params.menuId) });
+    return this.menuService.getMenu({ id: Number(params.menuId), StoreId: Number(params.storeId) });
   }
 
   
@@ -112,6 +112,6 @@ export class MenuController {
   })
   @Delete('/:menuId')
   deleteMenu(@Param() params: { storeId: number; menuId: number }) {
-    return this.menuService.deleteMenu({ id: Number(params.menuId) });
+    return this.menuService.deleteMenu({ id: Number(params.menuId), StoreId: Number(params.storeId) });
   }
 }
