@@ -28,7 +28,7 @@ export class StoreService {
   }
 
   // 전체 업장 조회 (메인페이지로 연결)
-  async findAllStores(): Promise<object> {
+  async findAllStores(): Promise<Store[]> {
     return this.prisma.store.findMany();
   }
 
