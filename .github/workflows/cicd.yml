@@ -45,13 +45,6 @@ jobs:
       - name: checkout commit
         uses: actions/checkout@v3
 
-      # .env file 생성
-      - name: make .env file
-        run: |
-          touch .env
-          echo "DATABASE_URL = ${{ secrets.DATABASE_URL }}" >> .env
-          echo "PORT = ${{ secrets.PORT }}" >> .env
-
       # S3에게 전달할 압축 파일 생성
       - name: make .zip file
         run: zip -qq -r ./$GITHUB_SHA.zip .
