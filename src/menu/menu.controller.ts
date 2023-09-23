@@ -8,7 +8,7 @@ import { AuthEntity } from 'src/auth/entity/auth.entity';
 import { ApiFile } from 'src/utils/decorator/api-file.decorator';
 
 
-@Controller('stores')
+@Controller('/stores/:store_id/menus')
 @ApiTags('menu CRUD')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
@@ -22,7 +22,7 @@ export class MenuController {
     type: 'number',
   })
   @ApiFile('file')
-  @Post('/:store_id/menus')
+  @Post('/')
   @UsePipes(ValidationPipe)
   createMenu(
     @UploadedFile(
@@ -45,7 +45,7 @@ export class MenuController {
     name: 'store_id',
     type: 'number',
   })
-  @Get('/:store_id/menus')
+  @Get('/')
   getMeuns(@Param('store_id') store_id: number) {
     return this.menuService.getMenus({ StoreId: store_id });
   }
@@ -80,7 +80,7 @@ export class MenuController {
   })
   @ApiFile('file')
   // @UseInterceptors(FileInterceptor('file'))
-  @Put('/:store_id/menus/:menu_id') //* params DTO
+  @Put('/:menu_id') //* params DTO
   @UsePipes(ValidationPipe)
   updateMenu(
     @UploadedFile(
@@ -110,7 +110,7 @@ export class MenuController {
     name: 'menu_id',
     type: 'number',
   })
-  @Delete('/:store_id/menus/:menu_id')
+  @Delete('/:menu_id')
   deleteMenu(@Param() params: { store_id: number; menu_id: number }) {
     return this.menuService.deleteMenu({ id: Number(params.menu_id) });
   }
