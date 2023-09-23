@@ -1,7 +1,7 @@
 // ? 업장 메인 와이어프레임 추가 (업장 등록 CRUD)
 // ? 업장 - 가게 연결, api 명세서 수정 필요
 
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Req, Request } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
@@ -23,8 +23,8 @@ export class StoreController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  async createStore(@Body() createStoreDto: CreateStoreDto) {
-    return this.storeService.createStore(createStoreDto);
+  async createStore(@Request() req: Request, @Body() createStoreDto: CreateStoreDto) {
+    return this.storeService.createStore(createStoreDto, req);
   }
 
   // 전체 업장 조회
@@ -46,8 +46,8 @@ export class StoreController {
   @Put(':storeId')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  async updateComment(@Param('storeId') id: string, @Body() updateStoreDto: UpdateStoreDto) {
-    return this.storeService.updateStore(+id, updateStoreDto);
+  async updateComment(@Request() req: Request, @Param('storeId') id: string, @Body() updateStoreDto: UpdateStoreDto) {
+    return this.storeService.updateStore(+id, updateStoreDto, req);
   }
 
   // 업장 정보 삭제
@@ -55,7 +55,7 @@ export class StoreController {
   @Delete(':storeId')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  async deleteCart(@Param('storeId') id: string) {
-    return this.storeService.deleteStore(+id);
+  async deleteCart(@Request() req: Request, @Param('storeId') id: string) {
+    return this.storeService.deleteStore(+id, req);
   }
 }

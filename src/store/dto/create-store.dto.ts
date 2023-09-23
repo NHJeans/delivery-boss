@@ -13,10 +13,10 @@ export class CreateStoreDto {
   @ApiProperty()
   readonly info: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty()
-  readonly OwnerId: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // @ApiProperty()
+  // readonly OwnerId: number;
 
   // * 가게 이미지 필요하면 넣기, 근데 추가할려면 schema에도 추가해야함!
   // * 이미지 
