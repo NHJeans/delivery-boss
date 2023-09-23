@@ -6,7 +6,6 @@ import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 // TODO 사장님은 업장 정보를 등록 및 수정, 삭제를 할 수 있어야 한다 -> 등록 / 수정 / 삭제 시 사장 권한 확인
 // TODO 사장님은 업장 정보를 오직 1개만 갖고 있을 수 있어야 합니다.
@@ -21,7 +20,6 @@ export class StoreController {
   // 업장 생성
   @ApiOperation({ summary: '업장 생성' })
   @Post()
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async createStore(@Request() req: Request, @Body() createStoreDto: CreateStoreDto) {
     return this.storeService.createStore(req, createStoreDto);
@@ -44,7 +42,6 @@ export class StoreController {
   // 업장 정보 수정
   @ApiOperation({ summary: '업장 정보 수정' })
   @Put(':storeId')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async updateComment(@Request() req: Request, @Param('storeId') id: string, @Body() updateStoreDto: UpdateStoreDto) {
     return this.storeService.updateStore(req, +id, updateStoreDto);
@@ -53,7 +50,6 @@ export class StoreController {
   // 업장 정보 삭제
   @ApiOperation({ summary: '업장 정보 삭제' })
   @Delete(':storeId')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async deleteCart(@Request() req: Request, @Param('storeId') id: string) {
     return this.storeService.deleteStore(req, +id);

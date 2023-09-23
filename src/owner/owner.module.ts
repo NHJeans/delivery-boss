@@ -10,6 +10,6 @@ import { OwnerSignupService } from './service/owner.signup.service';
   imports: [PrismaModule, JwtModule],
   controllers: [OwnerSignupController, OwnerLoginController],
   providers: [OwnerSignupService, OwnerLoginService],
-  exports: [OwnerLoginService]
+  exports: [OwnerLoginService],
 })
 export class OwnerModule {}

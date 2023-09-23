@@ -1,49 +1,43 @@
-import { ApiProperty, PickType } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsEmpty, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class menuDto { //* 스웨거 작성
-    @ApiProperty({
-        name: 'StoreId',
-        type: Number,
-    })
-    StoreId: number;
-    
-    @ApiProperty({
-        name: 'menuId',
-        type: Number,
-    })
-    menuId: number;
+export class menuDto {
+  //* 스웨거 작성
+  @ApiProperty({
+    name: 'StoreId',
+    type: Number,
+  })
+  StoreId: number;
 
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({
-        name: 'name',
-        type: String,
-    })
-    name: string;
+  @ApiProperty({
+    name: 'menuId',
+    type: Number,
+  })
+  menuId: number;
 
-    @Type(()=>Number)
-    @IsNumber()
-    @IsNotEmpty()
-    @ApiProperty({
-        name: 'pirce',
-        type: String,
-    })
-    price: number;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    name: 'name',
+    type: String,
+  })
+  name: string;
 
-    @ApiProperty({
-        name: 'image',
-        type: String,
-    })
-    image: string;
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty({
+    name: 'pirce',
+    type: String,
+  })
+  price: number;
+
+  @ApiProperty({
+    name: 'image',
+    type: String,
+  })
+  image: string;
 }
 
-
-export class CreateMenuDto extends PickType(menuDto,[
-    "StoreId",
-    "name",
-    "price",
-    "image"
-] as const) {}
-
+export class CreateMenuDto extends PickType(menuDto, ['StoreId', 'name', 'price', 'image'] as const) {}
