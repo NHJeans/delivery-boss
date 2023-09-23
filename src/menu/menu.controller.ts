@@ -18,16 +18,16 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuService } from './menu.service';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AuthEntity } from 'src/auth/entity/auth.entity';
 import { Request } from '@nestjs/common';
+import { ownerAuthGuard } from 'src/auth/owner.jwt-auth.guard';
 
 @Controller('stores')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Post('/:store_id/menus')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 생성' })
@@ -61,7 +61,6 @@ export class MenuController {
     return this.menuService.getMenu({ id: Number(params.menu_id) });
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 수정' })
@@ -82,7 +81,6 @@ export class MenuController {
     return this.menuService.updateMenu(data);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 삭제' })

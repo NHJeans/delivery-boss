@@ -22,15 +22,11 @@ import { AuthModule } from './auth/auth.module';
     CommentModule,
     CustomerModule,
     OwnerModule,
-<<<<<<< HEAD
-=======
     StoreModule,
     AuthModule,
     MenuModule,
->>>>>>> dev
     CartsModule,
     OrdersModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
