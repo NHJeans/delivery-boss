@@ -80,7 +80,6 @@ export class MenuController {
     type: 'number',
   })
   @ApiFile('file')
-  // @UseInterceptors(FileInterceptor('file'))
   @Put('/:menuId') //* params DTO
   @UsePipes(ValidationPipe)
   updateMenu(
