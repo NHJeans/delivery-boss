@@ -1,9 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseFilePipeBuilder, Post, Put, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Body, Controller, Delete, Get, Param, ParseFilePipeBuilder, Post, Put, UploadedFile, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuService } from './menu.service';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AuthEntity } from 'src/auth/entity/auth.entity';
 import { ApiFile } from 'src/utils/decorator/api-file.decorator';
@@ -18,6 +17,10 @@ export class MenuController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 생성'})
+  @ApiParam({
+    name: 'store_id',
+    type: 'number',
+  })
   @ApiFile('file')
   @Post('/:store_id/menus')
   @UsePipes(ValidationPipe)
@@ -38,6 +41,10 @@ export class MenuController {
 
 
   @ApiOperation({ summary: '메뉴 전체 조회'})
+  @ApiParam({
+    name: 'store_id',
+    type: 'number',
+  })
   @Get('/:store_id/menus')
   getMeuns(@Param('store_id') store_id: number) {
     return this.menuService.getMenus({ StoreId: store_id });
@@ -45,6 +52,14 @@ export class MenuController {
 
 
   @ApiOperation({ summary: '특정 메뉴 조회'})
+  @ApiParam({
+    name: 'store_id',
+    type: 'number',
+  })
+  @ApiParam({
+    name: 'menu_id',
+    type: 'number',
+  })
   @Get('/:store_id/menus/:menu_id')
   getMenu(@Param() params: { store_id: number; menu_id: number }) {
     return this.menuService.getMenu({ id: Number(params.menu_id) });
@@ -55,6 +70,14 @@ export class MenuController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 수정'})
+  @ApiParam({
+    name: 'store_id',
+    type: 'number',
+  })
+  @ApiParam({
+    name: 'menu_id',
+    type: 'number',
+  })
   @ApiFile('file')
   // @UseInterceptors(FileInterceptor('file'))
   @Put('/:store_id/menus/:menu_id') //* params DTO
@@ -79,6 +102,14 @@ export class MenuController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 삭제'})
+  @ApiParam({
+    name: 'store_id',
+    type: 'number',
+  })
+  @ApiParam({
+    name: 'menu_id',
+    type: 'number',
+  })
   @Delete('/:store_id/menus/:menu_id')
   deleteMenu(@Param() params: { store_id: number; menu_id: number }) {
     return this.menuService.deleteMenu({ id: Number(params.menu_id) });
