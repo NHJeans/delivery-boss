@@ -22,7 +22,7 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '../src', 'view'));
   app.setViewEngine('hbs');
 
-  app.use(cookieParser())
+  app.use(cookieParser());
   const config = new DocumentBuilder().setTitle('Delivery Boss').setDescription('The Median API description').setVersion('0.1').addBearerAuth().build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

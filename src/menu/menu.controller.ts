@@ -17,7 +17,7 @@ export class MenuController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 생성'})
+  @ApiOperation({ summary: '메뉴 생성' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -40,8 +40,7 @@ export class MenuController {
     return this.menuService.createMenu(data);
   }
 
-
-  @ApiOperation({ summary: '메뉴 전체 조회'})
+  @ApiOperation({ summary: '메뉴 전체 조회' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -51,8 +50,7 @@ export class MenuController {
     return this.menuService.getMenus({ StoreId: storeId });
   }
 
-
-  @ApiOperation({ summary: '특정 메뉴 조회'})
+  @ApiOperation({ summary: '특정 메뉴 조회' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -66,11 +64,10 @@ export class MenuController {
     return this.menuService.getMenu({ id: Number(params.menuId), StoreId: Number(params.storeId) });
   }
 
-  
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 수정'})
+  @ApiOperation({ summary: '메뉴 수정' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -85,23 +82,21 @@ export class MenuController {
   updateMenu(
     @UploadedFile(
       new ParseFilePipeBuilder().build({
-        fileIsRequired: false
+        fileIsRequired: false,
       })
     )
     file: Express.Multer.File,
     @Param() params: { storeId: number; menuId: number },
     @Body() data: UpdateMenuDto
   ) {
-
     data = { StoreId: Number(params.storeId), menuId: Number(params.menuId), ...data, image: file.path };
     return this.menuService.updateMenu(data);
   }
 
-
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 삭제'})
+  @ApiOperation({ summary: '메뉴 삭제' })
   @ApiParam({
     name: 'storeId',
     type: 'number',

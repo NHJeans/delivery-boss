@@ -19,7 +19,8 @@ export class OwnerJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: { userId: number }) {// ! 2023.09.22. userId 값으로 받아올 수 있게 수정
+  async validate(payload: { userId: number }) {
+    // ! 2023.09.22. userId 값으로 받아올 수 있게 수정
     const customer = await this.ownerLoginService.findOne(payload.userId);
 
     if (!customer) {

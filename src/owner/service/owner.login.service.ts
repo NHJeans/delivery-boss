@@ -76,7 +76,7 @@ export class OwnerLoginService {
   }
   async findOne(userId: number) {
     return await this.prisma.owner.findUnique({
-      where: { id: userId},
+      where: { id: userId },
     });
   }
 }
