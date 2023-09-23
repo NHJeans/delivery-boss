@@ -1,13 +1,15 @@
 // src/main.ts
 
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
+import { join } from 'path';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -15,6 +17,10 @@ async function bootstrap() {
       transform: true,
     })
   );
+
+  app.useStaticAssets(join(__dirname, '../src', 'public'));
+  app.setBaseViewsDir(join(__dirname, '../src', 'view'));
+  app.setViewEngine('hbs');
 
   app.use(cookieParser())
   const config = new DocumentBuilder().setTitle('Delivery Boss').setDescription('The Median API description').setVersion('0.1').addBearerAuth().build();
