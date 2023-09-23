@@ -15,6 +15,7 @@ enum UserType {
   Customer
 }
 
+// Owner : Store 1:1
 model Owner {
 id        Int      @id @default(autoincrement())
 email     String   @unique
@@ -22,7 +23,7 @@ password  String
 point     Int
 type      UserType @default(Owner)
 refreshToken  String?
-Stores    Store[]
+Stores    Store?
 }
 
 model Customer {
@@ -39,7 +40,7 @@ Carts     Cart[]
 
 model Store {
 id        Int      @id @default(autoincrement())
-OwnerId   Int
+OwnerId   Int      @unique
 name      String
 info      String
 Menus     Menu[]
@@ -85,7 +86,7 @@ Customer    Customer @relation(fields: [CustomerId], references: [id], onUpdate:
 
 model Comment {
 id          Int      @id @default(autoincrement())
-CustomerId  Int
+CustomerId  Int      
 OrderId     Int      @unique
 StoreId     Int
 review      String
