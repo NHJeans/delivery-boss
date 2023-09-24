@@ -37,12 +37,12 @@ export class StoreService {
 
   // 전체 업장 조회 (메인페이지로 연결)
   async findAllStores(): Promise<FindStoreDto[]> {
-    return this.prisma.store.findMany({ select: { name: true, info: true } });
+    return this.prisma.store.findMany({ select: { OwnerId: true, name: true, info: true } });
   }
 
   // 업장 세부 조회
   async findOneStore(storeId: number): Promise<FindStoreDto> {
-    return this.prisma.store.findUnique({ where: { id: storeId }, select: { name: true, info: true } });
+    return this.prisma.store.findUnique({ where: { id: storeId }, select: { OwnerId: true, name: true, info: true } });
   }
 
   // 업장 정보 수정
