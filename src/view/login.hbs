@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+    <title>우리 동네 배달 대장</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+    body {
+        font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    body>button {
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    body>button:hover {
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    .login-form {
+        width: 80%;
+        height: 40%;
+
+        position: absolute;
+        top: 30%;
+        left: 50%;
+
+        margin-left: -40%;
+
+        text-align: center;
+    }
+
+    .login-form>h1 {
+        font-size: 3vw;
+        margin-bottom: 2vw;
+    }
+
+    .login-form>form {
+        width: 30%;
+        margin: 0 auto;
+    }
+
+    .login-form>form .form-group {
+        margin-bottom: 2vw;
+
+    }
+
+    .login-form>form .btn-primary {
+        font-size: 1.5vw;
+
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    .login-form>form .btn-primary:hover {
+        border-color: skyblue;
+        background-color: skyblue;
+
+        animation: jelly 0.3s
+    }
+
+    @keyframes jelly {
+        25% {
+            transform: scale(0.9, 1.1);
+        }
+
+        50% {
+            transform: scale(1.1, 0.9);
+        }
+
+        75% {
+            transform: scale(0.95, 1.05);
+        }
+    }
+</style>
+
+<body>
+    <div class="login-form">
+        <h1>로그인</h1>
+        <form>
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" placeholder="이메일">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" placeholder="비밀번호">
+            </div>
+            <button type="submit" class="btn btn-primary">로그인</button>
+        </form>
+    </div>
+</body>
+
+</html>

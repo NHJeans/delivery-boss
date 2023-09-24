@@ -9,19 +9,21 @@ export class CartsService {
 
   // * 장바구니 추가
   async createCart(customerId: number, menuId: number, body: CartCreateDto) {
-    const menu = await this.prisma.menu.findUnique({ where: { id: menuId }});
+    const menu = await this.prisma.menu.findUnique({ where: { id: menuId } });
     // ! 해당하는 메뉴가 없는 경우
     if (!menu) {
       throw new HttpException('메뉴를 다시 확인해주세요.', HttpStatus.PRECONDITION_FAILED);
     }
-    
-    await this.prisma.cart.create({ data: {
-      MenuId: menuId,
-      CustomerId: customerId,
-      count: body.count,
-      price: menu.price
-    } });
-    
+
+    await this.prisma.cart.create({
+      data: {
+        MenuId: menuId,
+        CustomerId: customerId,
+        count: body.count,
+        price: menu.price,
+      },
+    });
+
     return { message: '장바구니에 메뉴를 담았습니다.' };
   }
 
@@ -37,10 +39,10 @@ export class CartsService {
         count: cart.count,
         price: cart.price,
         status: cart.status,
-      }
+      };
     });
   }
-  
+
   // * 장바구니 수정
   async updateCart(customerId: number, cartId: number, body: CartUpdateDto) {
     const cart = await this.prisma.cart.findUnique({ where: { id: cartId } });
@@ -58,18 +60,18 @@ export class CartsService {
 
     return { message: '장바구니 수정이 완료되었습니다.' };
   }
-  
+
   // * 장바구니 삭제
   async deleteCart(customerId: number, cartId: number) {
     const cart = await this.prisma.cart.findUnique({ where: { id: cartId } });
     // ! 해당하는 카트가 없는 경우
     if (!cart) {
-     throw new HttpException('카트를 다시 확인해주세요.', HttpStatus.NOT_FOUND);
+      throw new HttpException('카트를 다시 확인해주세요.', HttpStatus.NOT_FOUND);
     }
-    
+
     // ! 카트 삭제 권한이 없는 경우
     if (cart.CustomerId !== customerId) {
-     throw new HttpException('삭제 권한이 없습니다.', HttpStatus.FORBIDDEN);
+      throw new HttpException('삭제 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
     await this.prisma.cart.delete({ where: { id: cart.id } });

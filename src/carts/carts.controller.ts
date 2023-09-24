@@ -11,12 +11,12 @@ export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
 
   // * 장바구니 추가
-  @ApiOperation({ summary: '장바구니 추가'})
+  @ApiOperation({ summary: '장바구니 추가' })
   @Post('/:menuId')
   async createCart(@Param('menuId') menuId: number, @Body() body: CartCreateDto) {
     // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
     const customerId: number = 3;
-    
+
     return this.cartsService.createCart(customerId, menuId, body);
   }
 
@@ -29,7 +29,7 @@ export class CartsController {
 
     return this.cartsService.getAllCarts(customerId);
   }
-  
+
   // * 장바구니 수정
   @ApiOperation({ summary: '장바구니 수정' })
   @Patch('/:cartId')
