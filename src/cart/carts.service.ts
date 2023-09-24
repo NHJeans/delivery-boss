@@ -14,7 +14,7 @@ export class CartsService {
     const menu = await this.prisma.menu.findUnique({ where: { id: menuId } });
     // ! 해당하는 메뉴가 없는 경우
     if (!menu) {
-      throw new HttpException('메뉴를 다시 확인해주세요.', HttpStatus.PRECONDITION_FAILED);
+      throw new HttpException('메뉴를 다시 확인해주세요.', HttpStatus.NOT_FOUND);
     }
 
     await this.prisma.cart.create({
