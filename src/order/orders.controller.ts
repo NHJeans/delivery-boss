@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
+import { customerAuthGuard } from 'src/auth/customer.jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { OrderCreateDto } from './dto/order.create.dto';
+import { RequestWithCustomer, RequestWithUser } from './interface/order.interface';
 import { OrdersService } from './orders.service';
-
-// Todo: 전체적으로 - 로그인 정보 관련 코드 수정
 
 @Controller('orders')
 export class OrdersController {
@@ -12,9 +13,9 @@ export class OrdersController {
   // * 주문 등록
   @ApiOperation({ summary: '주문 등록' })
   @Post()
-  async createOrder(@Body() body: OrderCreateDto) {
-    // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
-    const customerId: number = 3;
+  @UseGuards(customerAuthGuard)
+  async createOrder(@Req() req: RequestWithCustomer, @Body() body: OrderCreateDto) {
+    const customerId = req.user.id;
 
     return this.ordersService.createOrder(customerId, body);
   }
@@ -22,32 +23,16 @@ export class OrdersController {
   // * 주문 전체 조회
   @ApiOperation({ summary: '주문 전체 조회' })
   @Get()
-  async getAllOrders() {
-    // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
-    const user = {
-      id: 3,
-      type: 'Owner',
-    };
-
-    return this.ordersService.getAllOrders(user);
+  @UseGuards(JwtAuthGuard)
+  async getAllOrders(@Req() req: RequestWithUser) {
+    return this.ordersService.getAllOrders(req.user);
   }
 
   // * 주문 상세 조회
   @ApiOperation({ summary: '주문 상세 조회' })
   @Get(':orderId')
-  async findOne(@Param('orderId') orderId: number) {
-    // Todo: 팀과 논의해서 유저 정보를 담을 방법을 정하고 코드 수정하기
-    const user = {
-      id: 3,
-    };
-
-    return this.ordersService.getOneOrder(orderId, user);
-  }
-
-  // * 주문 등록
-  @ApiOperation({ summary: '주문 등록' })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: any) {
-    return this.ordersService.update(+id, updateOrderDto);
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Req() req: RequestWithUser, @Param('orderId') orderId: number) {
+    return this.ordersService.getOneOrder(orderId, req.user);
   }
 }
