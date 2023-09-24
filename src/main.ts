@@ -19,8 +19,8 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
-  app.useStaticAssets(join(__dirname, '../src', 'public'));
-  app.setBaseViewsDir(join(__dirname, '../src', 'view'));
+  app.useStaticAssets(join(process.cwd(), './src', 'public'));
+  app.setBaseViewsDir(join(process.cwd(), './src', 'view'));
   app.setViewEngine('hbs');
 
   app.use(cookieParser());
