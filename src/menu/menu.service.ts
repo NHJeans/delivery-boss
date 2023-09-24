@@ -1,10 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Menu, Owner, Prisma } from '@prisma/client';
+import { Menu, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StoreService } from 'src/store/store.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
-import { CustomRequest } from 'types/express.type';
 
 //Todo: 중복되는 코드 정리 필요
 @Injectable()
@@ -93,14 +92,14 @@ export class MenuService {
     if(store.OwnerId !== user){
         throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
-  
+
     // 메뉴 확인
     const isMenu = await this.prisma.menu.findUnique({
       where: {
-        id:updateMenuDto.menuId,
-      }
+        id: updateMenuDto.menuId,
+      },
     });
-    if(!isMenu){
+    if (!isMenu) {
       throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 
@@ -113,7 +112,7 @@ export class MenuService {
     if (menu) {
       throw new HttpException('이미 존재하는 메뉴입니다.', HttpStatus.BAD_REQUEST);
     }
-    
+
     // 메뉴 수정
     return this.prisma.menu.update({
       where: {
@@ -140,14 +139,14 @@ export class MenuService {
     if(store.OwnerId !== user){
         throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
-  
+
     // 메뉴 확인
     const isMenu = await this.prisma.menu.findUnique({
       where: {
         id: where.id,
-      }
+      },
     });
-    if(!isMenu){
+    if (!isMenu) {
       throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 

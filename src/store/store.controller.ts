@@ -1,7 +1,7 @@
 // ? 업장 메인 와이어프레임 추가 (업장 등록 CRUD)
 // ? 업장 - 가게 연결, api 명세서 수정 필요
 
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Req, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Request } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
@@ -49,7 +49,7 @@ export class StoreController {
   @ApiBearerAuth()
   @Put(':storeId')
   async updateStore(@Request() req: CustomRequest, @Param('storeId') storeId: string, @Body() updateStoreDto: UpdateStoreDto) {
-    const ownerId = req.user.id
+    const ownerId = req.user.id;
     return this.storeService.updateStore(ownerId, +storeId, updateStoreDto);
   }
 
@@ -59,7 +59,7 @@ export class StoreController {
   @ApiBearerAuth()
   @Delete(':storeId')
   async deleteStore(@Request() req: CustomRequest, @Param('storeId') storeId: string) {
-    const ownerId = req.user.id
+    const ownerId = req.user.id;
     return this.storeService.deleteStore(ownerId, +storeId);
   }
 }

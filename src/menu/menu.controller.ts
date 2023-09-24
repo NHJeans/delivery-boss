@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, ParseFilePipeBuilder, Post, Put, Req, UploadedFile, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiExcludeEndpoint, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Menu, Owner } from '@prisma/client';
+import { Menu } from '@prisma/client';
 import { AuthEntity } from 'src/auth/entity/auth.entity';
 import { ownerAuthGuard } from 'src/auth/owner.jwt-auth.guard';
 import { ApiFile } from 'src/utils/decorator/api-file.decorator';
+import { CustomRequest } from 'types/express.type';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuService } from './menu.service';
-import { CustomRequest } from 'types/express.type';
 
 
 // interface RequestWithUser extends Request {
@@ -23,7 +23,7 @@ export class MenuController {
   @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 생성'})
+  @ApiOperation({ summary: '메뉴 생성' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -50,8 +50,7 @@ export class MenuController {
     return this.menuService.createMenu(data, user);
   }
 
-
-  @ApiOperation({ summary: '메뉴 전체 조회'})
+  @ApiOperation({ summary: '메뉴 전체 조회' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -77,11 +76,10 @@ export class MenuController {
     return this.menuService.getMenu({ id: Number(params.menuId), StoreId: Number(params.storeId) });
   }
 
-  
   @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 수정'})
+  @ApiOperation({ summary: '메뉴 수정' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -96,7 +94,7 @@ export class MenuController {
   updateMenu(
     @UploadedFile(
       new ParseFilePipeBuilder().build({
-        fileIsRequired: false
+        fileIsRequired: false,
       })
     )
     file: Express.Multer.File,
@@ -112,11 +110,10 @@ export class MenuController {
     return this.menuService.updateMenu(data, user);
   }
 
-
   @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 삭제'})
+  @ApiOperation({ summary: '메뉴 삭제' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
