@@ -1,13 +1,12 @@
 import { Body, Controller, Delete, Get, Param, ParseFilePipeBuilder, Post, Put, Req, UploadedFile, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Menu, Owner } from '@prisma/client';
+import { AuthEntity } from 'src/auth/entity/auth.entity';
+import { ownerAuthGuard } from 'src/auth/owner.jwt-auth.guard';
+import { ApiFile } from 'src/utils/decorator/api-file.decorator';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuService } from './menu.service';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { AuthEntity } from 'src/auth/entity/auth.entity';
-import { ApiFile } from 'src/utils/decorator/api-file.decorator';
-import { Menu, Owner } from '@prisma/client';
-import { AuthGuard } from '@nestjs/passport';
 
 
 interface RequestWithUser extends Request {
@@ -20,7 +19,7 @@ interface RequestWithUser extends Request {
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
-  @UseGuards(AuthGuard('owner-jwt'))
+  @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 생성'})
@@ -77,7 +76,7 @@ export class MenuController {
   }
 
   
-  @UseGuards(AuthGuard('owner-jwt'))
+  @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 수정'})
@@ -111,7 +110,7 @@ export class MenuController {
   }
 
 
-  @UseGuards(AuthGuard('owner-jwt'))
+  @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
   @ApiOperation({ summary: '메뉴 삭제'})

@@ -30,7 +30,7 @@ export class OwnerLoginService {
     }
 
     //* 비밀번호가 일치하면 JWT 토큰을 생성. 이 토큰의 payload는 사용자의 ID만 포함
-    const jwtPayload = { userId: user.id };
+    const jwtPayload = { userId: user.id, type: 'Owner' };
 
     const accessToken = this.jwtService.sign(jwtPayload, { expiresIn: '5m', secret: this.configService.get<string>('JWT_SECRET') });
     const refreshToken = this.jwtService.sign(jwtPayload, { expiresIn: '7d', secret: this.configService.get<string>('JWT_REFRESH_SECRET') });
@@ -39,8 +39,9 @@ export class OwnerLoginService {
       where: { id: user.id },
       data: { refreshToken },
     });
+    // res.cookie('accessToken', accessToken, { httpOnly: true, secure: true });
+    // res.cookie('refreshToken', refreshToken);
     res.setHeader('Authorization', `Bearer ${accessToken}`);
-    //res.cookie('Authorization', `Bearer ${accessToken}`);
     res.json({ message: '로그인에 성공하였습니다.' });
   }
   async renewAccessToken(refreshToken: string, res: Response): Promise<void> {
@@ -49,7 +50,7 @@ export class OwnerLoginService {
       const decoded = this.jwtService.verify(refreshToken, { secret: this.configService.get<string>('JWT_REFRESH_SECRET') });
       userId = decoded.userId;
     } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('유효하지 않은 refreshToekn 입니다.');
     }
 
     const user = await this.prisma.owner.findUnique({
@@ -58,9 +59,9 @@ export class OwnerLoginService {
     });
 
     if (!user || user.refreshToken !== refreshToken) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('유효하지 않은 refreshToekn 입니다.');
     }
-    const jwtPayload = { userId: user.id };
+    const jwtPayload = { userId: user.id, type: 'Owner' };
     const newAccessToken = this.jwtService.sign(jwtPayload, { expiresIn: '5m', secret: this.configService.get<string>('JWT_SECRET') });
     res.setHeader('Authorization', `Bearer ${newAccessToken}`);
     //res.cookie('Authorization', `Bearer ${newAccessToken}`);
@@ -76,7 +77,7 @@ export class OwnerLoginService {
   }
   async findOne(userId: number) {
     return await this.prisma.owner.findUnique({
-      where: { id: userId},
+      where: { id: userId },
     });
   }
 }

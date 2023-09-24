@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Menu, Owner, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { StoreService } from 'src/store/store.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
-import { StoreService } from 'src/store/store.service';
 
 //Todo: 중복되는 코드 정리 필요
 //! 윤주님이 storeService 메소드 명 수정시 `findOneComment`도 같이 수정 해야함
@@ -34,7 +34,7 @@ export class MenuService {
         name: createMenuDto.name,
       },
     });
-    if(menu) {
+    if (menu) {
       throw new HttpException('이미 존재하는 메뉴입니다.', HttpStatus.BAD_REQUEST);
     }
 
@@ -74,7 +74,7 @@ export class MenuService {
     const menu = await this.prisma.menu.findUnique({
       where: menuWhereUniqueInput,
     });
-    if(!menu){
+    if (!menu) {
       throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 
@@ -110,7 +110,7 @@ export class MenuService {
         name: updateMenuDto.name,
       },
     });
-    if(menu) {
+    if (menu) {
       throw new HttpException('이미 존재하는 메뉴입니다.', HttpStatus.BAD_REQUEST);
     }
     
