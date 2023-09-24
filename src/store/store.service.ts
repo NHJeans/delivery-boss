@@ -5,13 +5,11 @@ import { CreateStoreDto } from './dto/create-store.dto';
 import { FindStoreDto } from './dto/find-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 
+// TODO 생성 및 업데이트 날짜 추가
+// TODO 정렬 기능 추가 -> 날짜순 or 좋아요 순 등
 @Injectable()
 export class StoreService {
   constructor(private prisma: PrismaService) {}
-
-  // TODO 사장님은 업장 정보를 등록 및 수정, 삭제를 할 수 있어야 한다 -> 등록 / 수정 / 삭제 시 사장 권한 확인
-  // TODO 사장님은 업장 정보를 오직 1개만 갖고 있을 수 있어야 합니다. -> OwnerId로 구분 예정, OwnerId는 로그인 정보에서 끌어오기!!
-  // TODO 업장 정보 목록은 모두가 볼 수 있어야 합니다.
 
   // 업장 정보 생성
   async createStore(ownerId: number, createStoreDto: CreateStoreDto): Promise<{ message: string }> {
