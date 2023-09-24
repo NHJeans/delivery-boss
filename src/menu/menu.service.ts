@@ -16,7 +16,6 @@ export class MenuService {
 
   //* 메뉴 생성
   async createMenu(createMenuDto: CreateMenuDto, user: Owner): Promise<Menu> {
-
     // 업장 확인
     const store = await this.storeService.findOneStore(createMenuDto.StoreId);
     if (!store) {
@@ -47,7 +46,7 @@ export class MenuService {
   //* 메뉴 전체 조회
   async getMenus(menuWhereInput: Prisma.MenuWhereInput): Promise<Menu[]> {
     // 업장 확인
-  
+
     // const store = await this.storeService.findOneComment(Number(menuWhereInput.StoreId));
     // if (!store) {
     //   throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
@@ -86,17 +85,17 @@ export class MenuService {
     }
 
     // 접근 권한 확인
-    if(store.OwnerId !== user.id){
-        throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    if (store.OwnerId !== user.id) {
+      throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
-  
+
     // 메뉴 확인
     const isMenu = await this.prisma.menu.findUnique({
       where: {
-        id:updateMenuDto.menuId,
-      }
+        id: updateMenuDto.menuId,
+      },
     });
-    if(!isMenu){
+    if (!isMenu) {
       throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 
@@ -109,7 +108,7 @@ export class MenuService {
     if (menu) {
       throw new HttpException('이미 존재하는 메뉴입니다.', HttpStatus.BAD_REQUEST);
     }
-    
+
     // 메뉴 수정
     return this.prisma.menu.update({
       where: {
@@ -133,17 +132,17 @@ export class MenuService {
     }
 
     // 접근 권한 확인
-    if(store.OwnerId !== user.id){
-        throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    if (store.OwnerId !== user.id) {
+      throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
-  
+
     // 메뉴 확인
     const isMenu = await this.prisma.menu.findUnique({
       where: {
         id: where.id,
-      }
+      },
     });
-    if(!isMenu){
+    if (!isMenu) {
       throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 

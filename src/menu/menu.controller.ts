@@ -8,7 +8,6 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuService } from './menu.service';
 
-
 interface RequestWithUser extends Request {
   user: Owner;
 }
@@ -22,7 +21,7 @@ export class MenuController {
   @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 생성'})
+  @ApiOperation({ summary: '메뉴 생성' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -41,16 +40,14 @@ export class MenuController {
     @Param('storeId') storeId: number,
     @Body() data: CreateMenuDto
   ): Promise<Menu> {
-    
-    const user:Owner = req.user;
+    const user: Owner = req.user;
 
     data = { StoreId: storeId, ...data, image: file.path };
 
     return this.menuService.createMenu(data, user);
   }
 
-
-  @ApiOperation({ summary: '메뉴 전체 조회'})
+  @ApiOperation({ summary: '메뉴 전체 조회' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -60,8 +57,7 @@ export class MenuController {
     return this.menuService.getMenus({ StoreId: storeId });
   }
 
-
-  @ApiOperation({ summary: '특정 메뉴 조회'})
+  @ApiOperation({ summary: '특정 메뉴 조회' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -75,11 +71,10 @@ export class MenuController {
     return this.menuService.getMenu({ id: Number(params.menuId), StoreId: Number(params.storeId) });
   }
 
-  
   @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 수정'})
+  @ApiOperation({ summary: '메뉴 수정' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -94,7 +89,7 @@ export class MenuController {
   updateMenu(
     @UploadedFile(
       new ParseFilePipeBuilder().build({
-        fileIsRequired: false
+        fileIsRequired: false,
       })
     )
     file: Express.Multer.File,
@@ -102,18 +97,17 @@ export class MenuController {
     @Param() params: { storeId: number; menuId: number },
     @Body() data: UpdateMenuDto
   ) {
-    const user:Owner = req.user;
+    const user: Owner = req.user;
 
     data = { StoreId: Number(params.storeId), menuId: Number(params.menuId), ...data, image: file.path };
 
     return this.menuService.updateMenu(data, user);
   }
 
-
   @UseGuards(ownerAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AuthEntity })
-  @ApiOperation({ summary: '메뉴 삭제'})
+  @ApiOperation({ summary: '메뉴 삭제' })
   @ApiParam({
     name: 'storeId',
     type: 'number',
@@ -124,7 +118,7 @@ export class MenuController {
   })
   @Delete('/:menuId')
   deleteMenu(@Req() req: RequestWithUser, @Param() params: { storeId: number; menuId: number }) {
-    const user:Owner = req.user;
+    const user: Owner = req.user;
 
     return this.menuService.deleteMenu({ id: Number(params.menuId), StoreId: Number(params.storeId) }, user);
   }
