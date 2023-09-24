@@ -13,6 +13,7 @@ export class CustomerLoginService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService
   ) {}
+  //* Authentication
   //* 사용자가 이메일과 비밀번호로 로그인 요청
   async login(loginDto: CustomerLoginDto, res: Response): Promise<void> {
     const { email, password } = loginDto;
@@ -29,10 +30,10 @@ export class CustomerLoginService {
       throw new HttpException('로그인 정보가 올바르지 않습니다.', HttpStatus.UNAUTHORIZED);
     }
 
-    //* 비밀번호가 일치하면 JWT 토큰을 생성. 이 토큰의 payload는 사용자의 ID만 포함
+    //* 비밀번호가 일치하면 JWT 토큰을 생성. 이 토큰의 payload는 사용자의 ID랑 Type이 포함
     const jwtPayload = { userId: user.id, type: 'Customer' };
 
-    const accessToken = this.jwtService.sign(jwtPayload, { expiresIn: '5m', secret: this.configService.get<string>('JWT_SECRET') });
+    const accessToken = this.jwtService.sign(jwtPayload, { expiresIn: '30m', secret: this.configService.get<string>('JWT_SECRET') });
     const refreshToken = this.jwtService.sign(jwtPayload, { expiresIn: '7d', secret: this.configService.get<string>('JWT_REFRESH_SECRET') });
 
     await this.prisma.customer.update({

@@ -1,9 +1,9 @@
 import { Body, Controller, Get, HttpCode, Post, Render } from '@nestjs/common';
 import { CustomerSignUpDto } from '../dto/customer.signup.dto';
 import { CustomerSignupService } from '../service/customer.signup.service';
-import { ApiBearerAuth, ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('login & logout')
+@ApiTags('sign up')
 @Controller('/auth/customer')
 export class CustomerSignupController {
   constructor(private readonly signupService: CustomerSignupService) {}
@@ -13,8 +13,7 @@ export class CustomerSignupController {
   @Render('signup')
   registerPage() {}
 
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'customer 로그아웃' })
+  @ApiOperation({ summary: '고객님 회원가입' })
   @Post('/signup')
   @HttpCode(201)
   async signUp(@Body() signupDto: CustomerSignUpDto) {
