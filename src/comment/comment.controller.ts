@@ -27,7 +27,7 @@ export class CommentController {
   @ApiBearerAuth()
   // * param은 string으로만 받을 수 있는 건가? 왜 다 string이지;; 처음부터 number로 받으면 안되나?
   async createComment(@Request() req: CustomRequest, @Param('orderId') orderId: string, @Body() createCommentDto: CreateCommentDto) {
-    const customerId = req.user.userId
+    const customerId = req.user.id
     return this.commentService.createComment(customerId, +orderId, createCommentDto);
   }
 
@@ -51,7 +51,7 @@ export class CommentController {
   @UseGuards(customerAuthGuard)
   @ApiBearerAuth()
   async updateComment(@Request() req: CustomRequest, @Param('commentId') commentId: string, @Body() updateCommentDto: UpdateCommentDto) {
-    const customerId = req.user.userId
+    const customerId = req.user.id
     return this.commentService.updateComment(customerId, +commentId, updateCommentDto);
   }
 
@@ -61,7 +61,7 @@ export class CommentController {
   @UseGuards(customerAuthGuard)
   @ApiBearerAuth()
   async deleteComment(@Request() req: CustomRequest, @Param('commentId') commentId: string) {
-    const customerId = req.user.userId
+    const customerId = req.user.id
     return this.commentService.deleteComment(customerId, +commentId);
   }
 }

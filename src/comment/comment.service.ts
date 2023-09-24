@@ -18,7 +18,7 @@ export class CommentService {
 
   async createComment(customerId: number, orderId: number, createCommentDto: CreateCommentDto): Promise<{ message: string }> {
     // const 뒤 review 타입 지정 해야함! 근데 뭘로...? @prisma/client에서 가져옴! 형식은 : 으로!!
-    const review: Comment = await this.prisma.comment.findUnique({ where: { OrderId: orderId } });
+    const review = await this.prisma.comment.findUnique({ where: { OrderId: orderId } });
 
     if (review) {
       throw new HttpException('이미 리뷰를 작성하였습니다.', HttpStatus.BAD_REQUEST);
@@ -55,13 +55,13 @@ export class CommentService {
   }
 
   // 고객 별 리뷰 조회
-  async findCommentsCustomer(customerId: number): Promise<CreateCommentDto[]> {
+  async findCommentsCustomer(customerId: number): Promise<FindCommentDto[]> {
     const data: CreateCommentDto[] = await this.prisma.comment.findMany({ where: { CustomerId: customerId }, select: { review: true, star: true } });
     return data;
   }
 
   // 리뷰 수정
-  async updateComment(customerId: number, commentId: number, updateCommentDto: UpdateCommentDto): Promise<object> {
+  async updateComment(customerId: number, commentId: number, updateCommentDto: UpdateCommentDto): Promise<{ message: string }> {
     const review: Comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
 
     if (!review) {
