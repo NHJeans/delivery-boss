@@ -20,19 +20,21 @@
 
     body {
         font-family: 'Gowun Dodum', sans-serif;
-    }
 
-    .title {
         width: 80%;
         height: 20%;
 
         position: absolute;
-        top: 30%;
+        top: 25%;
         left: 50%;
 
         margin-left: -40%;
 
         text-align: center;
+    }
+
+    .title {
+        animation: backInLeft 1s
     }
 
     .title>h1 {
@@ -45,7 +47,17 @@
         font-size: 1.2vw;
     }
 
-    .title>button {
+    .welcomeMessage {
+        margin: 2vw;
+
+        opacity: 0;
+    }
+
+    .buttons {
+        opacity: 0;
+    }
+
+    .buttons>button {
         margin: 3vw;
 
         font-size: 1.5vw;
@@ -54,7 +66,7 @@
         background-color: skyblue;
     }
 
-    .title>button:hover {
+    .buttons>button:hover {
         border-color: skyblue;
         background-color: skyblue;
 
@@ -74,15 +86,127 @@
             transform: scale(0.95, 1.05);
         }
     }
+
+    @keyframes backInLeft {
+        0% {
+            transform: translateX(-2000px) scale(0.3);
+            opacity: 0.3;
+        }
+
+        80% {
+            transform: translateX(0px) scale(0.6);
+            opacity: 0.6;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fadeIn {
+        animation-duration: 1s;
+        animation-name: fadeIn;
+        animation-fill-mode: both;
+        animation-delay: 0.3s;
+    }
+
+    @keyframes bounceIn {
+
+        from,
+        20%,
+        40%,
+        60%,
+        80%,
+        to {
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        0% {
+            opacity: 0;
+            transform: scale3d(0.3, 0.3, 0.3);
+        }
+
+        20% {
+            transform: scale3d(1.1, 1.1, 1.1);
+        }
+
+        40% {
+            transform: scale3d(0.9, 0.9, 0.9);
+        }
+
+        60% {
+            opacity: 1;
+            transform: scale3d(1.03, 1.03, 1.03);
+        }
+
+        80% {
+            transform: scale3d(0.97, 0.97, 0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale3d(1, 1, 1);
+        }
+    }
+
+    .bounceIn {
+        animation-duration: 1s;
+        animation-name: bounceIn;
+        animation-fill-mode: both;
+        animation-delay: 1.3s;
+    }
 </style>
 
 <body>
     <div class="title">
         <h1>우리 동네 배달 대장</h1>
-        <h2>당신은 누구야? 사장님? 고객님?</h2>
-        <button class="btn btn-primary">사장님</button>
-        <button class="btn btn-primary">고객님</button>
     </div>
+    <div class="welcomeMessage">
+        <h2>당신은 누구야? 사장님? 고객님?</h2>
+    </div>
+    <div class="buttons">
+        <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#customerModal'>사장님</button>
+        <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#customerModal'>고객님</button>
+    </div>
+    <div class='modal fade' id='customerModal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h5 class='modal-title' id='exampleModalLabel'>고객님 서비스 선택</h5>
+                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                </div>
+                <div class='modal-body'>
+                    <button class='btn btn-primary btn-block' id='loginButton'>로그인하기</button>
+                    <button class='btn btn-secondary btn-block mt-2' id='signupButton'>회원가입하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginButton').addEventListener('click', function () { window.location.href = '/auth/owner/login'; });
+        document.getElementById('signupButton').addEventListener('click', function () { window.location.href = '/auth/owner/signup'; });
+
+        const title = document.querySelector('.title');
+        title.addEventListener('animationend', (event) => {
+            const welcomeMessage = document.querySelector('.welcomeMessage');
+            welcomeMessage.classList.add('fadeIn');
+
+            const buttons = document.querySelector('.buttons');
+            buttons.classList.add('bounceIn');
+        });
+    </script>
 </body>
 
 </html>
