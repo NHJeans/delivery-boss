@@ -15,10 +15,10 @@ export class MenuService {
   //* 메뉴 생성
   async createMenu(createMenuDto: CreateMenuDto): Promise<Menu> {
     // 업장 확인
-    const store = await this.storeService.findOneComment(createMenuDto.StoreId);
-    if (!store) {
-      throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
-    }
+    // const store = await this.storeService.findOneComment(createMenuDto.StoreId);
+    // if (!store) {
+    //   throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    // }
 
     // 메뉴 중복 확인
     const menu = await this.prisma.menu.findFirst({
@@ -44,10 +44,11 @@ export class MenuService {
   //* 메뉴 전체 조회
   async getMenus(menuWhereInput: Prisma.MenuWhereInput): Promise<Menu[]> {
     // 업장 확인
-    const store = await this.storeService.findOneComment(Number(menuWhereInput.StoreId));
-    if (!store) {
-      throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
-    }
+  
+    // const store = await this.storeService.findOneComment(Number(menuWhereInput.StoreId));
+    // if (!store) {
+    //   throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    // }
 
     return this.prisma.menu.findMany({
       where: menuWhereInput,
@@ -57,10 +58,10 @@ export class MenuService {
   //* 특정 메뉴 조회
   async getMenu(menuWhereUniqueInput: Prisma.MenuWhereUniqueInput): Promise<Menu> {
     // 업장 확인
-    const store = await this.storeService.findOneComment(Number(menuWhereUniqueInput.StoreId));
-    if (!store) {
-      throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
-    }
+    // const store = await this.storeService.findOneComment(Number(menuWhereUniqueInput.StoreId));
+    // if (!store) {
+    //   throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    // }
 
     // 메뉴 확인
     const menu = await this.prisma.menu.findUnique({

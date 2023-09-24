@@ -47,7 +47,7 @@ export class StoreService {
 
   // 업장 정보 수정
   // TODO 로그인 정보로 수정 권한 추가
-  async updateStore(req: any, id: number, updateStoreDto: UpdateStoreDto): Promise<object> {
+  async updateStore(req: any, id: number, updateStoreDto: UpdateStoreDto): Promise<{ message: string }> {
     // ? 여기는 return 왜 안붙여도 되는지 궁금하당
     const store: Store = await this.prisma.store.findUnique({ where: { id } });
 
@@ -67,7 +67,7 @@ export class StoreService {
   // 업장 삭제
   // TODO 로그인 정보로 삭제 권한 추가
   // delete 완료 후 에러 메시지 작성
-  async deleteStore(req: any, id: number): Promise<object> {
+  async deleteStore(req: any, id: number): Promise<{ message: string }> {
     const store: Store = await this.prisma.store.findUnique({ where: { id } });
 
     if (!store) {

@@ -15,7 +15,7 @@ export class CommentService {
   // TODO customerId로 로그인 정보 비교 후 권한 확인
   // createCommentDto(review, star), findunique(storeId, customerId), param(orderId)
 
-  async createComment(req: any, orderId: number, createCommentDto: CreateCommentDto): Promise<object> {
+  async createComment(customerId: number, orderId: number, createCommentDto: CreateCommentDto): Promise<object> {
     // const 뒤 review 타입 지정 해야함! 근데 뭘로...? @prisma/client에서 가져옴! 형식은 : 으로!!
     const review: Comment = await this.prisma.comment.findUnique({ where: { OrderId: orderId } });
 
@@ -29,12 +29,12 @@ export class CommentService {
       throw new HttpException('주문 정보가 확인되지 않습니다.', HttpStatus.NOT_FOUND);
     }
 
-    if (order.CustomerId !== req.user.id) {
+    if (order.CustomerId !== customerId) {
       throw new HttpException('리뷰 작성 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
     // * order.--- 이거랑 createCommentDto 부분 각각 한번에 표현할 수 있는지 알아보기!!
-    const data = await this.prisma.comment.create({
+    await this.prisma.comment.create({
       data: {
         OrderId: orderId,
         StoreId: order.StoreId,
@@ -48,27 +48,27 @@ export class CommentService {
   }
 
   // 가게 별 리뷰 조회
-  async findCommentsStore(storeId: number) {
+  async findCommentsStore(storeId: number): Promise<Comment[]> {
     const data: Comment[] = await this.prisma.comment.findMany({ where: { StoreId: storeId } });
-    return { data };
+    return  data ;
   }
 
   // 고객 별 리뷰 조회
   async findCommentsCustomer(customerId: number) {
-    const data: Comment[] = await this.prisma.comment.findMany({ where: { CustomerId: customerId } });
+    const data: CreateCommentDto[] = await this.prisma.comment.findMany({ where: { CustomerId: customerId }, select: {review:true, star: true} });
     return { data };
   }
 
   // 리뷰 수정
-  async updateComment(req: any, commentId: number, updateCommentDto: UpdateCommentDto): Promise<object> {
+  async updateComment(customerId: number, commentId: number, updateCommentDto: UpdateCommentDto): Promise<object> {
     const review: Comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
 
     if (!review) {
       throw new HttpException('리뷰가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 
-    if (review.CustomerId !== req.user.id) {
-      throw new HttpException('이미 리뷰를 작성하였습니다.', HttpStatus.FORBIDDEN);
+    if (review.CustomerId !== customerId) {
+      throw new HttpException('리뷰 수정 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
     await this.prisma.comment.update({
@@ -80,14 +80,14 @@ export class CommentService {
   }
 
   // delete 완료 후 에러 메시지 작성
-  async deleteComment(req: any, commentId: number): Promise<object> {
-    const review: Comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
+  async deleteComment(customerId: number, commentId: number): Promise<{ message: string }> {
+    const review:Comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
 
     if (!review) {
       throw new HttpException('리뷰가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
 
-    if (review.CustomerId !== req.user.id) {
+    if (review.CustomerId !== customerId) {
       throw new HttpException('리뷰 삭제 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
