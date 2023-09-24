@@ -17,7 +17,7 @@ export class OwnerLoginController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'owner 로그인' })
-  @Post('/login')
+  @Post('login')
   async login(@Body() loginDto: OwnerLoginDto, @Res() res: Response): Promise<void> {
     return this.ownerloginService.login(loginDto, res);
   }
