@@ -3,6 +3,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Comment, Order } from '@prisma/client';
+import { FindCommentDto } from './dto/find-comment.dto';
 
 @Injectable()
 export class CommentService {
@@ -15,7 +16,7 @@ export class CommentService {
   // TODO customerId로 로그인 정보 비교 후 권한 확인
   // createCommentDto(review, star), findunique(storeId, customerId), param(orderId)
 
-  async createComment(customerId: number, orderId: number, createCommentDto: CreateCommentDto): Promise<object> {
+  async createComment(customerId: number, orderId: number, createCommentDto: CreateCommentDto): Promise<{ message: string }> {
     // const 뒤 review 타입 지정 해야함! 근데 뭘로...? @prisma/client에서 가져옴! 형식은 : 으로!!
     const review: Comment = await this.prisma.comment.findUnique({ where: { OrderId: orderId } });
 
@@ -48,15 +49,15 @@ export class CommentService {
   }
 
   // 가게 별 리뷰 조회
-  async findCommentsStore(storeId: number): Promise<Comment[]> {
-    const data: Comment[] = await this.prisma.comment.findMany({ where: { StoreId: storeId } });
-    return  data ;
+  async findCommentsStore(storeId: number): Promise<FindCommentDto[]> {
+    const data: FindCommentDto[] = await this.prisma.comment.findMany({ where: { StoreId: storeId }, select: { review: true, star: true } });
+    return data;
   }
 
   // 고객 별 리뷰 조회
-  async findCommentsCustomer(customerId: number) {
-    const data: CreateCommentDto[] = await this.prisma.comment.findMany({ where: { CustomerId: customerId }, select: {review:true, star: true} });
-    return { data };
+  async findCommentsCustomer(customerId: number): Promise<CreateCommentDto[]> {
+    const data: CreateCommentDto[] = await this.prisma.comment.findMany({ where: { CustomerId: customerId }, select: { review: true, star: true } });
+    return data;
   }
 
   // 리뷰 수정
@@ -81,7 +82,7 @@ export class CommentService {
 
   // delete 완료 후 에러 메시지 작성
   async deleteComment(customerId: number, commentId: number): Promise<{ message: string }> {
-    const review:Comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
+    const review: Comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
 
     if (!review) {
       throw new HttpException('리뷰가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
