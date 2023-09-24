@@ -3,6 +3,8 @@ import { PrismaService } from './../prisma/prisma.service';
 import { CartCreateDto } from './dto/cart.create.dto';
 import { CartUpdateDto } from './dto/cart.update.dto';
 
+// Todo: 전체적으로 - 이미지 전달 관련 코드 수정, 프론트 구현하면서 리턴해줄 키-값 수정하기
+
 @Injectable()
 export class CartsService {
   constructor(private readonly prisma: PrismaService) {}
