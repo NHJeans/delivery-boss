@@ -2,6 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { OrderCreateDto } from './dto/order.create.dto';
+import { User } from './interface/order.interface';
+
+// Todo: 전체적으로 - 프론트 구현하면서 리턴해줄 키-값 수정하기
 
 @Injectable()
 export class OrdersService {
@@ -84,7 +87,7 @@ export class OrdersService {
   }
 
   // * 주문 전체 조회
-  async getAllOrders(user: any) {
+  async getAllOrders(user: User) {
     let whereType;
     if (user.type === 'Owner') {
       const store = await this.prisma.store.findFirst({ where: { OwnerId: user.id }, select: { id: true } });
@@ -107,7 +110,7 @@ export class OrdersService {
   }
 
   // * 주문 상세 조회
-  async getOneOrder(orderId: number, user: any) {
+  async getOneOrder(orderId: number, user: User) {
     const order = await this.prisma.order.findUnique({ where: { id: orderId } });
     // ! 해당하는 주문이 없는 경우
     if (!order) {
@@ -134,13 +137,5 @@ export class OrdersService {
       price: order.price,
       status: order.status,
     };
-  }
-
-  update(id: number, updateOrderDto: any) {
-    return `This action updates a #${id} order`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} order`;
   }
 }

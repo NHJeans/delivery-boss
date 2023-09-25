@@ -3,6 +3,8 @@ import { PrismaService } from './../prisma/prisma.service';
 import { CartCreateDto } from './dto/cart.create.dto';
 import { CartUpdateDto } from './dto/cart.update.dto';
 
+// Todo: 전체적으로 - 이미지 전달 관련 코드 수정, 프론트 구현하면서 리턴해줄 키-값 수정하기
+
 @Injectable()
 export class CartsService {
   constructor(private readonly prisma: PrismaService) {}
@@ -12,7 +14,7 @@ export class CartsService {
     const menu = await this.prisma.menu.findUnique({ where: { id: menuId } });
     // ! 해당하는 메뉴가 없는 경우
     if (!menu) {
-      throw new HttpException('메뉴를 다시 확인해주세요.', HttpStatus.PRECONDITION_FAILED);
+      throw new HttpException('메뉴를 다시 확인해주세요.', HttpStatus.NOT_FOUND);
     }
 
     await this.prisma.cart.create({
