@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { customerAuthGuard } from 'src/auth/customer.jwt-auth.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { OrderCreateDto } from './dto/order.create.dto';
@@ -17,6 +17,7 @@ export class OrdersController {
   @ApiResponse({ status: 403, description: '등록 권한이 없는 장바구니입니다.'})
   @ApiResponse({ status: 412, description: '이미 주문 완료한 장바구니입니다.'})
   @ApiResponse({ status: 402, description: '잔여 포인트가 부족합니다.'})
+  @ApiBearerAuth()
   @Post()
   @UseGuards(customerAuthGuard)
   async createOrder(@Req() req: RequestWithCustomer, @Body() body: OrderCreateDto) {
@@ -27,6 +28,7 @@ export class OrdersController {
 
   // * 주문 전체 조회
   @ApiOperation({ summary: '주문 전체 조회' })
+  @ApiBearerAuth()
   @Get()
   @UseGuards(JwtAuthGuard)
   async getAllOrders(@Req() req: RequestWithUser) {
@@ -37,6 +39,7 @@ export class OrdersController {
   @ApiOperation({ summary: '주문 상세 조회' })
   @ApiResponse({ status: 404, description: '존재하지 않는 주문입니다.'})
   @ApiResponse({ status: 404, description: '조회 권한이 없습니다.'})
+  @ApiBearerAuth()
   @Get(':orderId')
   @UseGuards(JwtAuthGuard)
   async findOne(@Req() req: RequestWithUser, @Param('orderId') orderId: number) {
