@@ -2,8 +2,6 @@ name: delivery-boss-cicd
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "dev" ]
     
 env:
   PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
