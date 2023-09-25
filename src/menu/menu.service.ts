@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Menu, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { StoreService } from 'src/store/store.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
-import { StoreService } from 'src/store/store.service';
 
+//Todo: 중복되는 코드 정리 필요
 @Injectable()
 export class MenuService {
   constructor(
@@ -13,11 +14,17 @@ export class MenuService {
   ) {}
 
   //* 메뉴 생성
-  async createMenu(createMenuDto: CreateMenuDto): Promise<Menu> {
+  async createMenu(createMenuDto: CreateMenuDto, user: number): Promise<Menu> {
+
     // 업장 확인
-    const store = await this.storeService.findOneComment(createMenuDto.StoreId);
+    const store = await this.storeService.findOneStore(createMenuDto.StoreId);
     if (!store) {
       throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    }
+
+    // 접근 권한 확인
+    if(store.OwnerId !== user){
+      throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
     // 메뉴 중복 확인
@@ -43,8 +50,8 @@ export class MenuService {
 
   //* 메뉴 전체 조회
   async getMenus(menuWhereInput: Prisma.MenuWhereInput): Promise<Menu[]> {
-    // 업장 확인
-    const store = await this.storeService.findOneComment(Number(menuWhereInput.StoreId));
+    // 업장 확인  
+    const store = await this.storeService.findOneStore(Number(menuWhereInput.StoreId));
     if (!store) {
       throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
@@ -57,7 +64,7 @@ export class MenuService {
   //* 특정 메뉴 조회
   async getMenu(menuWhereUniqueInput: Prisma.MenuWhereUniqueInput): Promise<Menu> {
     // 업장 확인
-    const store = await this.storeService.findOneComment(Number(menuWhereUniqueInput.StoreId));
+    const store = await this.storeService.findOneStore(Number(menuWhereUniqueInput.StoreId));
     if (!store) {
       throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
     }
@@ -74,9 +81,27 @@ export class MenuService {
   }
 
   //* 메뉴 수정
-  async updateMenu(updateMenuDto: UpdateMenuDto): Promise<Menu> {
-    // 가게 및 메뉴 확인
-    await this.getMenu({ id: updateMenuDto.menuId, StoreId: updateMenuDto.StoreId });
+  async updateMenu(updateMenuDto: UpdateMenuDto, user: number): Promise<Menu> {
+    // 업장 확인
+    const store = await this.storeService.findOneStore(Number(updateMenuDto.StoreId));
+    if (!store) {
+      throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    }
+
+    // 접근 권한 확인
+    if(store.OwnerId !== user){
+        throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    }
+
+    // 메뉴 확인
+    const isMenu = await this.prisma.menu.findUnique({
+      where: {
+        id: updateMenuDto.menuId,
+      },
+    });
+    if (!isMenu) {
+      throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    }
 
     // 메뉴 중복 확인
     const menu = await this.prisma.menu.findFirst({
@@ -103,9 +128,27 @@ export class MenuService {
   }
 
   //* 메뉴 삭제
-  async deleteMenu(where: Prisma.MenuWhereUniqueInput): Promise<Menu> {
-    // 가게 및 메뉴 확인
-    await this.getMenu({ id: where.id, StoreId: where.StoreId });
+  async deleteMenu(where: Prisma.MenuWhereUniqueInput, user: number): Promise<Menu> {
+    // 업장 확인
+    const store = await this.storeService.findOneStore(Number(where.StoreId));
+    if (!store) {
+      throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    }
+
+    // 접근 권한 확인
+    if(store.OwnerId !== user){
+        throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    }
+
+    // 메뉴 확인
+    const isMenu = await this.prisma.menu.findUnique({
+      where: {
+        id: where.id,
+      },
+    });
+    if (!isMenu) {
+      throw new HttpException('메뉴가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
+    }
 
     // 메뉴 삭제
     return this.prisma.menu.delete({

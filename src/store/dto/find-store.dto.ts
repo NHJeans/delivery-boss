@@ -2,7 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, Validator, validate } from 'class-validator';
 import { info } from 'console';
 
-export class CreateStoreDto {
+// createStoreDto에서 가져온 거 + ownerId 추가
+export class FindStoreDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
@@ -13,14 +14,8 @@ export class CreateStoreDto {
   @ApiProperty()
   readonly info: string;
 
-  // @IsNumber()
-  // @IsNotEmpty()
-  // @ApiProperty()
-  // readonly OwnerId: number;
-
-  // * 가게 이미지 필요하면 넣기, 근데 추가할려면 schema에도 추가해야함!
-  // * 이미지 
-  //   @IsString()
-  //   @ApiProperty()
-  //   readonly info: image;
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly OwnerId: number;
 }
