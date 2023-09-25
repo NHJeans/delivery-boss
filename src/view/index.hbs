@@ -176,29 +176,16 @@
         <h2>당신은 누구야? 사장님? 고객님?</h2>
     </div>
     <div class="buttons">
-        <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#customerModal'>사장님</button>
-        <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#customerModal'>고객님</button>
+        <button class='btn btn-primary' id="owner">사장님</button>
+        <button class='btn btn-primary' id="customer">고객님</button>
     </div>
-    <div class='modal fade' id='customerModal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-        <div class='modal-dialog'>
-            <div class='modal-content'>
-                <div class='modal-header'>
-                    <h5 class='modal-title' id='exampleModalLabel'>고객님 서비스 선택</h5>
-                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                </div>
-                <div class='modal-body'>
-                    <button class='btn btn-primary btn-block' id='loginButton'>로그인하기</button>
-                    <button class='btn btn-secondary btn-block mt-2' id='signupButton'>회원가입하기</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
-        document.getElementById('loginButton').addEventListener('click', function () { window.location.href = '/auth/owner/login'; });
-        document.getElementById('signupButton').addEventListener('click', function () { window.location.href = '/auth/owner/signup'; });
-
         const title = document.querySelector('.title');
+        const ownerButton = document.getElementById('owner');
+        const customerButton = document.getElementById('customer');
+
         title.addEventListener('animationend', (event) => {
             const welcomeMessage = document.querySelector('.welcomeMessage');
             welcomeMessage.classList.add('fadeIn');
@@ -206,6 +193,13 @@
             const buttons = document.querySelector('.buttons');
             buttons.classList.add('bounceIn');
         });
+
+        const redirect = async (url) => {
+            window.location.href = url;
+        }
+
+        ownerButton.addEventListener('click', function () { window.location.href = '/auth/owner'; });
+        customerButton.addEventListener('click', function () { window.location.href = '/auth/customer'; });
     </script>
 </body>
 

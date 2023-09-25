@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { OwnerLoginDto } from '../dto/owner.login.dto';
 import { LogoutDto } from '../dto/owner.logout.dto';
@@ -8,6 +8,12 @@ import { OwnerLoginService } from '../service/owner.login.service';
 export class OwnerLoginController {
   constructor(private readonly ownerloginService: OwnerLoginService) {}
 
+  @Get()
+  @Render('owner')
+  ownerPage() {
+
+  }
+  
   @Post('/login')
   async login(@Body() loginDto: OwnerLoginDto, @Res() res: Response): Promise<void> {
     return this.ownerloginService.login(loginDto, res);

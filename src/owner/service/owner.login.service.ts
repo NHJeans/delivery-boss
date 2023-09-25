@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@n
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
 import { PrismaService } from '../../prisma/prisma.service';
 import { OwnerLoginDto } from '../dto/owner.login.dto';
-import { Response } from 'express';
 
 @Injectable()
 export class OwnerLoginService {

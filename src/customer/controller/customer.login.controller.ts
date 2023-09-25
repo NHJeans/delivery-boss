@@ -8,9 +8,11 @@ import { CustomerLoginService } from '../service/customer.login.service';
 export class CustomerLoginController {
   constructor(private readonly customerloginService: CustomerLoginService) {}
 
-  @Get('login') // GET 요청을 처리하는 라우트 추가
-  @Render('login')
-  loginPage() {}
+  @Get()
+  @Render('customer')
+  customerPage() {
+    
+  }
 
   @Post('login')
   async login(@Body() loginDto: CustomerLoginDto, @Res() res: Response): Promise<void> {
