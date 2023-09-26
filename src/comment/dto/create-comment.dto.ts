@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator';
-import { max } from 'rxjs';
 
 // * service, controller 작성 후 항목은 빼고, 검사 부분은 추가해보기!
 

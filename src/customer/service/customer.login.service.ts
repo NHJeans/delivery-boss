@@ -33,8 +33,8 @@ export class CustomerLoginService {
     //* 비밀번호가 일치하면 JWT 토큰을 생성. 이 토큰의 payload는 사용자의 ID랑 Type이 포함
     const jwtPayload = { userId: user.id, type: 'Customer' };
 
-    const accessToken = this.jwtService.sign(jwtPayload, { expiresIn: '30m', secret: this.configService.get<string>('JWT_SECRET') });
-    const refreshToken = this.jwtService.sign(jwtPayload, { expiresIn: '7d', secret: this.configService.get<string>('JWT_REFRESH_SECRET') });
+    const accessToken = this.jwtService.sign(jwtPayload, { expiresIn: '30m', secret: process.env.JWT_SECRET });
+    const refreshToken = this.jwtService.sign(jwtPayload, { expiresIn: '7d', secret: process.env.JWT_REFRESH_SECRET });
 
     await this.prisma.customer.update({
       where: { id: user.id },
@@ -43,6 +43,10 @@ export class CustomerLoginService {
     // res.cookie('accessToken', `Bearer ${accessToken}`);
     // res.cookie('refreshToken', refreshToken);
     res.setHeader('Authorization', `Bearer ${accessToken}`);
+    res.cookie('RefreshToken', refreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
     res.json({ message: '로그인에 성공하였습니다.' });
   }
   async renewAccessToken(refreshToken: string, res: Response): Promise<void> {

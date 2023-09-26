@@ -25,6 +25,10 @@ export class CustomerSignupService {
     }
     //* 비밀번호 해싱
     const hashedPassword = await bcrypt.hash(password, 10);
+    //? 암호화에 사용되는 솔트(salt)를 생성하는 데 필요한 반복 횟수를 나타내며, 이 반복 횟수는 비밀번호 해싱의 복잡성과 시간을 결정
+    //? 10은 비밀번호를 암호화할 때 해싱 함수가 반복적으로 실행되는 횟수
+
+    console.log(hashedPassword);
 
     //* 사용자 생성
     await this.prisma.customer.create({

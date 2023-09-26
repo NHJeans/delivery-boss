@@ -15,7 +15,6 @@ export class MenuService {
 
   //* 메뉴 생성
   async createMenu(createMenuDto: CreateMenuDto, user: number): Promise<Menu> {
-
     // 업장 확인
     const store = await this.storeService.findOneStore(createMenuDto.StoreId);
     if (!store) {
@@ -23,7 +22,7 @@ export class MenuService {
     }
 
     // 접근 권한 확인
-    if(store.OwnerId !== user){
+    if (store.OwnerId !== user) {
       throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
@@ -50,7 +49,7 @@ export class MenuService {
 
   //* 메뉴 전체 조회
   async getMenus(menuWhereInput: Prisma.MenuWhereInput): Promise<Menu[]> {
-    // 업장 확인  
+    // 업장 확인
     const store = await this.storeService.findOneStore(Number(menuWhereInput.StoreId));
     if (!store) {
       throw new HttpException('업장 정보가 존재하지 않습니다.', HttpStatus.NOT_FOUND);
@@ -89,8 +88,8 @@ export class MenuService {
     }
 
     // 접근 권한 확인
-    if(store.OwnerId !== user){
-        throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    if (store.OwnerId !== user) {
+      throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
     // 메뉴 확인
@@ -136,8 +135,8 @@ export class MenuService {
     }
 
     // 접근 권한 확인
-    if(store.OwnerId !== user){
-        throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
+    if (store.OwnerId !== user) {
+      throw new HttpException('접근 권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
     // 메뉴 확인

@@ -9,7 +9,6 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuService } from './menu.service';
 
-
 // interface RequestWithUser extends Request {
 //   user: Owner;
 // }
@@ -42,7 +41,6 @@ export class MenuController {
     @Param('storeId') storeId: number,
     @Body() data: CreateMenuDto
   ): Promise<Menu> {
-    
     const user: number = req.user.id;
 
     data = { StoreId: storeId, ...data, image: file.path };
@@ -59,7 +57,6 @@ export class MenuController {
   getMeuns(@Param('storeId') storeId: number) {
     return this.menuService.getMenus({ StoreId: storeId });
   }
-
 
   // @ApiOperation({ summary: '특정 메뉴 조회'})
   // @ApiParam({
@@ -102,7 +99,6 @@ export class MenuController {
     @Param() params: { storeId: number; menuId: number },
     @Body() data: UpdateMenuDto
   ) {
-
     const user: number = req.user.id;
 
     data = { StoreId: Number(params.storeId), menuId: Number(params.menuId), ...data, image: file.path };
@@ -124,7 +120,6 @@ export class MenuController {
   })
   @Delete('/:menuId')
   deleteMenu(@Req() req: CustomRequest, @Param() params: { storeId: number; menuId: number }) {
-
     const user: number = req.user.id;
 
     return this.menuService.deleteMenu({ id: Number(params.menuId), StoreId: Number(params.storeId) }, user);
