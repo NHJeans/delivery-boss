@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <title>우리 동네 배달 대장</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+    body {
+        font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    body>button {
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    body>button:hover {
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    .login-form {
+        width: 80%;
+        height: 40%;
+
+        position: absolute;
+        top: 25%;
+        left: 50%;
+
+        margin-left: -40%;
+
+        text-align: center;
+    }
+
+    .login-form>h1 {
+        font-size: 3vw;
+        margin-bottom: 2vw;
+    }
+
+    .login-form>form {
+        width: 30%;
+        margin: 0 auto;
+    }
+
+    .login-form>form .form-group {
+        margin-bottom: 2vw;
+
+    }
+
+    .login-form>form .form-control {
+        width: 100%;
+        height: 2vw;
+        font-size: 0.8vw;
+    }
+
+    .login-form>form .btn-primary {
+        font-size: 1.5vw;
+
+        margin: 0.5vw 2vw 1vw 3vw;
+
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    .login-form>form .btn-primary:hover {
+        border-color: skyblue;
+        background-color: skyblue;
+
+        animation: jelly 0.3s
+    }
+
+    @keyframes jelly {
+        25% {
+            transform: scale(0.9, 1.1);
+        }
+
+        50% {
+            transform: scale(1.1, 0.9);
+        }
+
+        75% {
+            transform: scale(0.95, 1.05);
+        }
+    }
+</style>
+
+<body>
+    <div class="login-form">
+        <h1>사장님</h1>
+        <form>
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" placeholder="이메일">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" placeholder="비밀번호">
+            </div>
+            <button type="button" class="btn btn-primary" id="loginButton">로그인</button>
+            <button type="button" class="btn btn-primary" id="signUpButton">회원가입</button>
+        </form>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">서버 응답 메시지</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const signUpButton = document.getElementById('signUpButton');
+        const modal = document.getElementById('myModal');
+        const modalMessage = document.getElementById('modalMessage');
+
+        const setData = () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            return { email, password };
+        };
+
+        const setCookie = (name, value, minutes) => {
+            if (!minutes) {
+                document.cookie = `${name}=${(value || "")}; path=/`;
+            }
+            const date = new Date();
+            date.setTime(date.getTime() + (minutes * 60 * 1000));
+            const expires = `; expires=${date.toUTCString()}`;
+            document.cookie = `${name}=${(value || "")}${expires}; path=/`;
+        };
+
+        const login = async () => {
+            const data = setData();
+
+            try {
+                const response = await fetch('/auth/owner/login', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    const message = await response.json();
+                    modalMessage.innerText = message['message'];
+                    $('#myModal').modal('show');
+                    return;
+                }
+                const token = response.headers.get('Authorization').split(' ');
+                setCookie(token[0], token[1], 5);
+                window.location.href = '/';
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
+        };
+
+        const signUp = async () => {
+            const data = setData();
+
+            try {
+                const response = await fetch('/auth/owner/signup', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (response) {
+                    const message = await response.json();
+                    modalMessage.innerText = message['message'];
+                    $('#myModal').modal('show');
+                    return;
+                }
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
+        };
+
+        loginButton.addEventListener('click', login);
+        signUpButton.addEventListener('click', signUp);
+    });
+</script>
+
+</html>

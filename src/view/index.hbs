@@ -1,65 +1,206 @@
-<html lang='en'>
+<!DOCTYPE html>
+<html lang="en">
 
-  <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{! Bootstrap }}
-    <link
-      href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css'
-      rel='stylesheet'
-      integrity='sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9'
-      crossorigin='anonymous'
-    />
+    {{!-- Bootstrap --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
 
     <title>우리 동네 배달 대장</title>
-  </head>
+</head>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap'); body { font-family: 'Gowun Dodum', sans-serif; } .title { width: 80%;
-    height: 20%; position: absolute; top: 30%; left: 50%; margin-left: -40%; text-align: center; } .title>h1 { font-size: 5vw; } .title>h2 { margin: 2vw;
-    font-size: 1.2vw; } .title>button { margin: 3vw; font-size: 1.5vw; border-color: skyblue; background-color: skyblue; } .title>button:hover { border-color:
-    skyblue; background-color: skyblue; animation: jelly 0.3s } @keyframes jelly { 25% { transform: scale(0.9, 1.1); } 50% { transform: scale(1.1, 0.9); } 75% {
-    transform: scale(0.95, 1.05); } }
-  </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
-  <body>
-    <div class='title'>
-      <h1>우리 동네 배달 대장</h1>
-      <h2>당신은 누구야? 사장님? 고객님?</h2>
-      <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#customerModal'>사장님</button>
+    body {
+        font-family: 'Gowun Dodum', sans-serif;
 
-      <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#customerModal'>고객님</button>
+        width: 80%;
+        height: 20%;
 
+        position: absolute;
+        top: 25%;
+        left: 50%;
+
+        margin-left: -40%;
+
+        text-align: center;
+    }
+
+    .title {
+        animation: backInLeft 1s
+    }
+
+    .title>h1 {
+        font-size: 5vw;
+    }
+
+    .title>h2 {
+        margin: 2vw;
+
+        font-size: 1.2vw;
+    }
+
+    .welcomeMessage {
+        margin: 2vw;
+
+        opacity: 0;
+    }
+
+    .buttons {
+        opacity: 0;
+    }
+
+    .buttons>button {
+        margin: 3vw;
+
+        font-size: 1.5vw;
+
+        border-color: skyblue;
+        background-color: skyblue;
+    }
+
+    .buttons>button:hover {
+        border-color: skyblue;
+        background-color: skyblue;
+
+        animation: jelly 0.3s
+    }
+
+    @keyframes jelly {
+        25% {
+            transform: scale(0.9, 1.1);
+        }
+
+        50% {
+            transform: scale(1.1, 0.9);
+        }
+
+        75% {
+            transform: scale(0.95, 1.05);
+        }
+    }
+
+    @keyframes backInLeft {
+        0% {
+            transform: translateX(-2000px) scale(0.3);
+            opacity: 0.3;
+        }
+
+        80% {
+            transform: translateX(0px) scale(0.6);
+            opacity: 0.6;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fadeIn {
+        animation-duration: 1s;
+        animation-name: fadeIn;
+        animation-fill-mode: both;
+        animation-delay: 0.3s;
+    }
+
+    @keyframes bounceIn {
+
+        from,
+        20%,
+        40%,
+        60%,
+        80%,
+        to {
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        0% {
+            opacity: 0;
+            transform: scale3d(0.3, 0.3, 0.3);
+        }
+
+        20% {
+            transform: scale3d(1.1, 1.1, 1.1);
+        }
+
+        40% {
+            transform: scale3d(0.9, 0.9, 0.9);
+        }
+
+        60% {
+            opacity: 1;
+            transform: scale3d(1.03, 1.03, 1.03);
+        }
+
+        80% {
+            transform: scale3d(0.97, 0.97, 0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale3d(1, 1, 1);
+        }
+    }
+
+    .bounceIn {
+        animation-duration: 1s;
+        animation-name: bounceIn;
+        animation-fill-mode: both;
+        animation-delay: 1.3s;
+    }
+</style>
+
+<body>
+    <div class="title">
+        <h1>우리 동네 배달 대장</h1>
     </div>
-    <!-- Modal -->
-    <div class='modal fade' id='customerModal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-      <div class='modal-dialog'>
-        <div class='modal-content'>
-          <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>고객님 서비스 선택</h5>
-            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-          </div>
-          <div class='modal-body'>
-            <!-- 로그인하기 버튼에 ID를 추가하여 JavaScript에서 참조할 수 있게 합니다. -->
-            <button class='btn btn-primary btn-block' id='loginButton'>로그인하기</button>
-            <button class='btn btn-secondary btn-block mt-2' id='signupButton'>회원가입하기</button>
-          </div>
-        </div>
-      </div>
+    <div class="welcomeMessage">
+        <h2>당신은 누구야? 사장님? 고객님?</h2>
     </div>
-
-    <script
-      src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js'
-      integrity='sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm'
-      crossorigin='anonymous'
-    ></script>
+    <div class="buttons">
+        <button class='btn btn-primary' id="owner">사장님</button>
+        <button class='btn btn-primary' id="customer">고객님</button>
+    </div>
+    </div>
 
     <script>
-      document.getElementById('loginButton').addEventListener('click', function() { window.location.href = '/auth/customer/login'; });
-      document.getElementById('signupButton').addEventListener('click', function() { window.location.href = '/auth/customer/signup'; });
-    </script>
+        const title = document.querySelector('.title');
+        const ownerButton = document.getElementById('owner');
+        const customerButton = document.getElementById('customer');
 
-  </body>
+        title.addEventListener('animationend', (event) => {
+            const welcomeMessage = document.querySelector('.welcomeMessage');
+            welcomeMessage.classList.add('fadeIn');
+
+            const buttons = document.querySelector('.buttons');
+            buttons.classList.add('bounceIn');
+        });
+
+        const redirect = async (url) => {
+            window.location.href = url;
+        }
+
+        ownerButton.addEventListener('click', function () { window.location.href = '/auth/owner'; });
+        customerButton.addEventListener('click', function () { window.location.href = '/auth/customer'; });
+    </script>
+</body>
 
 </html>
